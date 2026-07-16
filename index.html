@@ -10,8 +10,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
         body { font-family: 'Rajdhani', sans-serif; background: #07070a; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; background-image: radial-gradient(circle at 50% 0%, #171033 0%, #050505 80%); }
         
-        /* Glassmorphism Container */
-        .container { background: rgba(20, 20, 25, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(0, 255, 136, 0.15); padding: 35px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,255,136,0.05); width: 100%; max-width: 600px; text-align: center; position: relative; z-index: 1; margin: 20px; }
+        .container { background: rgba(20, 20, 25, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(0, 255, 136, 0.15); padding: 35px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,255,136,0.05); width: 100%; max-width: 600px; text-align: center; position: relative; z-index: 1; margin: 20px; }
         
         h1 { font-family: 'Orbitron', sans-serif; color: #00ff88; font-size: 30px; text-transform: uppercase; text-shadow: 0 0 15px rgba(0,255,136,0.5); margin-bottom: 5px; }
         h2 { font-size: 18px; color: #00e5ff; margin-bottom: 25px; letter-spacing: 2px; }
@@ -27,16 +26,13 @@
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; box-shadow: none; border: 1px solid rgba(255,255,255,0.1); }
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
         .btn-admin { background: linear-gradient(135deg, #ff0055, #cc0044); color: #fff; box-shadow: 0 5px 15px rgba(255, 0, 85, 0.3); }
-        .btn-admin:hover { box-shadow: 0 8px 25px rgba(255, 0, 85, 0.5); }
         
         .hidden { display: none !important; }
         
-        /* Stats Panel */
         .stats-panel { display: flex; justify-content: space-between; background: rgba(0, 0, 0, 0.5); padding: 15px 20px; border-radius: 16px; border: 1px solid rgba(0, 229, 255, 0.2); margin-bottom: 20px; font-size: 16px; }
         .stats-panel span { color: #00e5ff; font-weight: bold; font-size: 24px; font-family: 'Orbitron', sans-serif; }
         .pity-alert { font-size: 15px; color: #ff0055; margin-top: 10px; font-weight: bold; text-shadow: 0 0 10px rgba(255,0,85,0.5); }
         
-        /* Wheel UI Modern */
         .wheel-container { position: relative; width: 320px; height: 320px; margin: 30px auto; }
         .wheel-border { position: absolute; top: -12px; left: -12px; right: -12px; bottom: -12px; border-radius: 50%; border: 2px dashed rgba(0, 255, 136, 0.3); animation: spinBorder 15s linear infinite; }
         .wheel { width: 100%; height: 100%; border-radius: 50%; position: relative; overflow: hidden; border: 8px solid #0a0a0a; box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,0.8); transition: transform 6s cubic-bezier(0.15, 0.85, 0.1, 1); }
@@ -44,7 +40,7 @@
         .slice { position: absolute; top: 0; right: 0; width: 50%; height: 50%; transform-origin: 0% 100%; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(0,0,0,0.5); }
         .slice span { position: absolute; transform: rotate(15deg) translateY(-75px); font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; width: 70px; text-align: center; line-height: 1.2; }
         
-        .slice:nth-child(1), .slice:nth-child(5), .slice:nth-child(9) { background: linear-gradient(45deg, #ff0055, #a30036); } /* Trúng */
+        .slice:nth-child(1), .slice:nth-child(5), .slice:nth-child(9) { background: linear-gradient(45deg, #ff0055, #a30036); }
         .slice:nth-child(even) { background: #1a1a1a; }
         .slice:nth-child(odd):not(:nth-child(1)):not(:nth-child(5)):not(:nth-child(9)) { background: #0f0f0f; }
 
@@ -67,9 +63,10 @@
         .pointer { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 40px solid #fff; z-index: 20; filter: drop-shadow(0 0 10px #fff); }
         
         .alert { background: rgba(255, 0, 85, 0.1); padding: 25px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(255,0,85,0.4); box-shadow: 0 0 30px rgba(255, 0, 85, 0.2); }
-        
-        /* Loader */
         .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #00ff88; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 10px; }
+        
+        .history-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px dashed rgba(0,255,136,0.3); font-size: 14px; text-align: left; }
+        .history-box a { color: #00e5ff; word-break: break-all; }
         
         @keyframes spinBorder { 100% { transform: rotate(360deg); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -78,13 +75,7 @@
 <body>
 
 <div class="container">
-    <!-- THÔNG BÁO GLOBAL TỪ HỆ THỐNG -->
-    <div id="globalClosedMsg" class="alert hidden">
-        <h1 style="color: #ff0055; font-size: 24px;">HỆ THỐNG THÔNG BÁO</h1>
-        <div id="closedText" style="margin-top: 15px; font-size: 18px; color: #fff; font-weight: bold; line-height: 1.5;"></div>
-    </div>
-
-    <!-- MÀN HÌNH ĐĂNG NHẬP -->
+    <!-- MÀN HÌNH ĐĂNG NHẬP (LUÔN HIỆN ĐẦU TIÊN) -->
     <div id="loginScreen">
         <h1>YONKIVN OFFICIAL</h1>
         <h2>ĐĂNG NHẬP HỆ THỐNG</h2>
@@ -105,6 +96,13 @@
         <button class="btn-secondary" onclick="switchScreen('loginScreen')">Quay Lại</button>
     </div>
 
+    <!-- THÔNG BÁO GLOBAL TỪ HỆ THỐNG -->
+    <div id="globalClosedMsg" class="alert hidden">
+        <h1 style="color: #ff0055; font-size: 24px;">HỆ THỐNG THÔNG BÁO</h1>
+        <div id="closedText" style="margin-top: 15px; font-size: 18px; color: #fff; font-weight: bold; line-height: 1.5;"></div>
+        <button class="btn-secondary" style="margin-top: 20px" onclick="logout()">Đăng Xuất</button>
+    </div>
+
     <!-- MÀN HÌNH CHÍNH (USER VÀ ADMIN) -->
     <div id="userScreen" class="hidden">
         <div id="adminPanel" class="hidden" style="background: rgba(255,0,85,0.1); padding: 15px; border-radius: 12px; border: 1px solid #ff0055; margin-bottom: 20px; text-align: left;">
@@ -122,19 +120,24 @@
             <div style="text-align: left;">LƯỢT QUAY<br><span id="spinsLeft">0</span></div>
             <div style="text-align: right;">ĐÃ VƯỢT<br><span id="totalBypasses">0</span> LẦN</div>
         </div>
-        <div id="pityAlert" class="pity-alert hidden">⚡ Đang kích hoạt: +<span id="pityPercent">0</span>% Tỉ Lệ Trúng (Từ <span id="pityCount">0</span> lượt vượt)</div>
+        <div id="pityAlert" class="pity-alert hidden">⚡ Đang kích hoạt: +<span id="pityPercent">0</span>% Tỉ Lệ Trúng</div>
         <p style="color: #888; font-size: 13px; margin-top: 5px;">Giới hạn: <span id="dailyLimitText" style="color: #00ff88;">0</span>/4 lần vượt hôm nay</p>
         
         <div class="wheel-container">
             <div class="wheel-border"></div>
             <div class="pointer"></div>
-            <div class="wheel" id="wheel">
-                <!-- Javascript sẽ tạo slice ở đây -->
-            </div>
+            <div class="wheel" id="wheel"></div>
             <button class="spin-btn" id="spinBtn" onclick="spinWheel()">QUAY</button>
         </div>
 
-        <button id="bypassBtn" onclick="startBypass()">⚡ VƯỢT LINK TỰ ĐỘNG (LINK4M)</button>
+        <button id="bypassBtn" onclick="startBypass()">⚡ VƯỢT LINK (LINK4M)</button>
+        
+        <div id="linkHistory" class="history-box hidden">
+            <strong style="color: #00ff88;">[Lịch Sử Link Đang Duyệt]</strong><br>
+            Bạn có 1 link đang trong quá trình duyệt ngầm. Nếu lỡ tay tắt tab vượt, bạn có thể ấn vào link dưới đây để mở lại:<br>
+            <a href="#" target="_blank" id="currentLink">Đang tải link...</a>
+        </div>
+
         <button class="btn-secondary" style="margin-top: 20px" onclick="logout()">Đăng Xuất</button>
     </div>
 </div>
@@ -149,126 +152,45 @@
         div.className = 'slice';
         let span = document.createElement('span');
         span.innerText = labels[i];
-        if(labels[i] === "TRÚNG") {
-            span.style.fontSize = "16px";
-            span.style.color = "#ffdd00";
-        }
+        if(labels[i] === "TRÚNG") { span.style.fontSize = "16px"; span.style.color = "#ffdd00"; }
         div.appendChild(span);
         wheelEl.appendChild(div);
     }
 
-    // --- KHỞI TẠO CƠ SỞ DỮ LIỆU LOCALSTORAGE ---
+    // --- KHỞI TẠO CƠ SỞ DỮ LIỆU ---
     if(!localStorage.getItem('yonkiUsers')) localStorage.setItem('yonkiUsers', JSON.stringify([]));
-    if(!localStorage.getItem('yonkiTotalPrizes')) localStorage.setItem('yonkiTotalPrizes', '0');
+    if(!localStorage.getItem('yonkiTotalPrizes')) localStorage.setItem('yonkiTotalPrizes', '5'); // Mặc định 5 giải
     
     let currentUser = null;
     let currentRotation = 0;
-    const API_KEY_LINK4M = '688d0212c6e84d0e055ba168'; // API KEY CỦA BẠN
+    const API_KEY_LINK4M = '688d0212c6e84d0e055ba168'; 
 
-    // --- HỆ THỐNG TỰ ĐỘNG RESET THEO NGÀY ---
     function checkAutoReset() {
         let today = new Date().toLocaleDateString();
         let lastDate = localStorage.getItem('yonkiLastDate');
 
         if (lastDate !== today) {
-            // Qua ngày mới -> Reset event
             let winner = JSON.parse(localStorage.getItem('yonkiTodayWinner'));
             let prizesLeft = parseInt(localStorage.getItem('yonkiTotalPrizes')) || 0;
 
             if (winner && prizesLeft > 0) {
-                // Hôm qua có người trúng -> trừ 1 phần quà trong kho
                 prizesLeft--;
                 localStorage.setItem('yonkiTotalPrizes', prizesLeft.toString());
             }
 
-            // Xóa người trúng hôm nay để đón người mới
             localStorage.setItem('yonkiTodayWinner', JSON.stringify(null));
             localStorage.setItem('yonkiLastDate', today);
         }
-    }
-
-    // --- KIỂM TRA TRẠNG THÁI SỰ KIỆN GLOBAL ---
-    function checkGlobalStatus() {
-        let winner = JSON.parse(localStorage.getItem('yonkiTodayWinner'));
-        let prizesLeft = parseInt(localStorage.getItem('yonkiTotalPrizes')) || 0;
-        let closedMsg = document.getElementById('globalClosedMsg');
-        let textEl = document.getElementById('closedText');
-
-        // Admin được bypass màn hình khóa để vào quản lý
-        let isAdmin = currentUser && currentUser.role === 'admin';
-
-        if (winner) {
-            closedMsg.classList.remove('hidden');
-            let hiddenTiktok = winner.idTiktok.substring(0, 3) + '*****';
-            
-            if (prizesLeft >= 1) {
-                textEl.innerHTML = `Đã hết hôm nay<br>Người trúng thưởng là: <span style="color:#00ff88">${hiddenTiktok}</span>`;
-            } else {
-                textEl.innerHTML = `HẾT EVENT RÙI`;
-            }
-            if(!isAdmin) hideUserScreens();
-        } else if (prizesLeft <= 0) {
-            closedMsg.classList.remove('hidden');
-            textEl.innerHTML = `HẾT EVENT RÙI`;
-            if(!isAdmin) hideUserScreens();
-        } else {
-            closedMsg.classList.add('hidden');
-        }
-    }
-
-    function hideUserScreens() {
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('registerScreen').classList.add('hidden');
-        document.getElementById('userScreen').classList.add('hidden');
     }
 
     function switchScreen(screenId) {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('registerScreen').classList.add('hidden');
         document.getElementById('userScreen').classList.add('hidden');
-        if(!document.getElementById('globalClosedMsg').classList.contains('hidden') && screenId !== 'adminScreen') return;
+        document.getElementById('globalClosedMsg').classList.add('hidden');
         document.getElementById(screenId).classList.remove('hidden');
     }
 
-    // --- XÁC NHẬN VƯỢT LINK THÀNH CÔNG (CALLBACK TỪ URL) ---
-    function checkUrlForReward() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const reward = urlParams.get('reward');
-        const sessionUserId = localStorage.getItem('yonkiSessionUser');
-
-        if (reward === '1' && sessionUserId) {
-            // Đăng nhập tự động
-            let users = JSON.parse(localStorage.getItem('yonkiUsers'));
-            currentUser = users.find(u => u.idGame === sessionUserId);
-            
-            if(currentUser) {
-                // Xử lý cộng thưởng
-                currentUser.spinsLeft++;
-                currentUser.totalBypasses++;
-                
-                let today = new Date().toLocaleDateString();
-                if(!currentUser.dailyBypasses || currentUser.dailyBypasses.date !== today) {
-                    currentUser.dailyBypasses = { date: today, count: 0 };
-                }
-                currentUser.dailyBypasses.count++;
-                
-                updateUserDB();
-                
-                // Xóa parameter trên thanh URL cho sạch
-                window.history.replaceState({}, document.title, window.location.pathname);
-                alert("🎉 Hệ thống xác nhận vượt link thành công! Cộng 1 Lượt Quay.");
-                
-                startSession();
-            }
-        } else if (sessionUserId) {
-            // Auto Login bình thường
-            let users = JSON.parse(localStorage.getItem('yonkiUsers'));
-            currentUser = users.find(u => u.idGame === sessionUserId);
-            if(currentUser) startSession();
-        }
-    }
-
-    // --- AUTHENTICATION ---
     function register() {
         let idGame = document.getElementById('regIdGame').value.trim();
         let idTiktok = document.getElementById('regIdTiktok').value.trim();
@@ -276,7 +198,7 @@
         if(!idGame || !idTiktok || !pass) return alert("Vui lòng điền đầy đủ!");
         
         let users = JSON.parse(localStorage.getItem('yonkiUsers'));
-        if(users.find(u => u.idGame === idGame || u.idTiktok === idTiktok)) return alert("ID Game hoặc TikTok đã được đăng ký!");
+        if(users.find(u => u.idGame === idGame || u.idTiktok === idTiktok)) return alert("ID đã được đăng ký!");
 
         users.push({ idGame, idTiktok, pass, spinsLeft: 0, totalBypasses: 0, role: 'user', dailyBypasses: { date: '', count: 0 } });
         localStorage.setItem('yonkiUsers', JSON.stringify(users));
@@ -288,18 +210,16 @@
         let loginId = document.getElementById('loginId').value.trim();
         let pass = document.getElementById('loginPass').value.trim();
 
-        // Admin Account Logic
         if(loginId === 'yonkivnofficial' && pass === 'honghiep') {
             let users = JSON.parse(localStorage.getItem('yonkiUsers'));
             let adminIndex = users.findIndex(u => u.role === 'admin');
             if(adminIndex === -1) {
-                // Khởi tạo Admin nếu chưa có
                 currentUser = { idGame: 'ADMIN', idTiktok: 'YONKIVN', pass: 'honghiep', spinsLeft: 100000, totalBypasses: 0, role: 'admin', dailyBypasses: { date: '', count: 0 } };
                 users.push(currentUser);
                 localStorage.setItem('yonkiUsers', JSON.stringify(users));
             } else {
                 currentUser = users[adminIndex];
-                currentUser.spinsLeft = 100000; // Luôn nạp lại 100k lượt cho admin
+                currentUser.spinsLeft = 100000;
                 updateUserDB();
             }
             localStorage.setItem('yonkiSessionUser', currentUser.idGame);
@@ -322,14 +242,15 @@
         if(currentUser.role === 'admin') {
             document.getElementById('adminPanel').classList.remove('hidden');
             document.getElementById('adminInventory').value = localStorage.getItem('yonkiTotalPrizes') || 0;
+            switchScreen('userScreen');
         } else {
             document.getElementById('adminPanel').classList.add('hidden');
+            checkGlobalStatus(); // User thường mới bị kiểm tra block
         }
         
-        checkGlobalStatus();
-        if(document.getElementById('globalClosedMsg').classList.contains('hidden') || currentUser.role === 'admin') {
+        if(!document.getElementById('userScreen').classList.contains('hidden')) {
             updateUserUI();
-            switchScreen('userScreen');
+            checkPendingBypass(); // Check xem có đang đếm ngầm không
         }
     }
 
@@ -339,7 +260,29 @@
         switchScreen('loginScreen'); 
     }
 
-    // --- GIAO DIỆN USER & PITY SYSTEM ---
+    function checkGlobalStatus() {
+        if(!currentUser) return;
+        let winner = JSON.parse(localStorage.getItem('yonkiTodayWinner'));
+        let prizesLeft = parseInt(localStorage.getItem('yonkiTotalPrizes')) || 0;
+        let closedMsg = document.getElementById('globalClosedMsg');
+        let textEl = document.getElementById('closedText');
+
+        if (winner) {
+            switchScreen('globalClosedMsg');
+            let hiddenTiktok = winner.idTiktok.substring(0, 3) + '*****';
+            if (prizesLeft > 0) {
+                textEl.innerHTML = `Đã hết hôm nay<br>Người trúng thưởng là: <span style="color:#00ff88">${hiddenTiktok}</span>`;
+            } else {
+                textEl.innerHTML = `HẾT EVENT RÙI`;
+            }
+        } else if (prizesLeft <= 0) {
+            switchScreen('globalClosedMsg');
+            textEl.innerHTML = `HẾT EVENT RÙI`;
+        } else {
+            switchScreen('userScreen');
+        }
+    }
+
     function updateUserUI() {
         if(!currentUser) return;
         document.getElementById('spinsLeft').innerText = currentUser.spinsLeft;
@@ -352,12 +295,9 @@
         document.getElementById('dailyLimitText').innerText = currentUser.dailyBypasses.count;
         
         let pityEl = document.getElementById('pityAlert');
-        let total = currentUser.totalBypasses;
-        if(total >= 20) {
-            // Mỗi 20 lượt + 5%
-            let pityMultiplier = Math.floor(total / 20);
+        if(currentUser.totalBypasses >= 20) {
+            let pityMultiplier = Math.floor(currentUser.totalBypasses / 20);
             document.getElementById('pityPercent').innerText = pityMultiplier * 5;
-            document.getElementById('pityCount').innerText = total;
             pityEl.classList.remove('hidden');
         } else {
             pityEl.classList.add('hidden');
@@ -373,15 +313,13 @@
         }
     }
 
-    // --- ADMIN INVENTORY ---
     function saveInventory() {
         let newStock = document.getElementById('adminInventory').value;
         localStorage.setItem('yonkiTotalPrizes', newStock);
         alert(`Đã cập nhật: Kho quà hiện có ${newStock} giải!`);
-        checkGlobalStatus();
     }
 
-    // --- TÍCH HỢP LINK4M API ---
+    // --- CƠ CHẾ VƯỢT LINK NGẦM (GIẢ LẬP XÁC MINH) ---
     function startBypass() {
         if(currentUser.role === 'admin') return alert("Admin có sẵn 100k lượt, không cần vượt link!");
         
@@ -389,43 +327,106 @@
         if(currentUser.dailyBypasses.date !== today) currentUser.dailyBypasses = { date: today, count: 0 };
 
         if(currentUser.dailyBypasses.count >= 4) {
-            return alert("🚫 Mỗi thiết bị / WiFi / IP chỉ được phép vượt tối đa 4 lần/ngày để chống spam!");
+            return alert("🚫 Mỗi mạng / thiết bị chỉ được phép vượt tối đa 4 lần/ngày!");
         }
 
+        let pending = JSON.parse(localStorage.getItem('yonkiPendingBypass_' + currentUser.idGame));
+        if(pending) return alert("Hệ thống đang duyệt 1 link của bạn rồi. Vui lòng chờ!");
+
         let btn = document.getElementById('bypassBtn');
-        btn.innerHTML = `<span class="loader"></span> ĐANG KHỞI TẠO...`;
+        btn.innerHTML = `<span class="loader"></span> ĐANG KHỞI TẠO LINK...`;
         btn.disabled = true;
 
-        // Tạo Link đích quay về web có tham số ?reward=1
-        let returnUrl = window.location.origin + window.location.pathname + '?reward=1';
-        let apiUrl = `https://link4m.co/api-shorten/v2?api=${API_KEY_LINK4M}&url=${encodeURIComponent(returnUrl)}`;
+        let destUrl = "https://youtube.com/@yonkivnofficial"; 
+        let apiUrl = `https://link4m.co/api-shorten/v2?api=${API_KEY_LINK4M}&url=${encodeURIComponent(destUrl)}`;
 
-        // Gọi API Link4M
         fetch(apiUrl)
         .then(res => res.json())
         .then(data => {
             if(data.status === 'success' || data.shortenedUrl) {
-                // Chuyển hướng sang Link4M
-                window.location.href = data.shortenedUrl; 
+                let shortUrl = data.shortenedUrl;
+                
+                // Mở link ở tab mới (Khách sẽ tự động bị văng sang tab kia)
+                window.open(shortUrl, '_blank'); 
+
+                // Lưu trạng thái duyệt ngầm
+                currentUser.dailyBypasses.count++;
+                updateUserDB();
+                
+                let pendingData = { link: shortUrl, time: Date.now() };
+                localStorage.setItem('yonkiPendingBypass_' + currentUser.idGame, JSON.stringify(pendingData));
+
+                startSilentCountdown(pendingData);
             } else {
-                alert("Lỗi tạo link từ hệ thống Link4M!");
+                alert("Lỗi hệ thống tạo link!");
                 resetBtn(btn);
             }
         })
         .catch(err => {
-            alert("Lỗi kết nối Server Link4M. Vui lòng thử lại sau!");
+            alert("Lỗi Server. Thử lại sau!");
             resetBtn(btn);
         });
     }
 
-    function resetBtn(btn) {
-        btn.innerHTML = `⚡ VƯỢT LINK TỰ ĐỘNG (LINK4M)`;
-        btn.disabled = false;
+    function startSilentCountdown(pendingData) {
+        let btn = document.getElementById('bypassBtn');
+        btn.innerHTML = `<span class="loader"></span> ĐANG DUYỆT NGẦM... (KHÔNG ĐÓNG WEB)`;
+        btn.disabled = true;
+
+        // Hiện Lịch sử Link
+        let historyEl = document.getElementById('linkHistory');
+        historyEl.classList.remove('hidden');
+        document.getElementById('currentLink').innerText = pendingData.link;
+        document.getElementById('currentLink').href = pendingData.link;
+
+        let elapsed = Date.now() - pendingData.time;
+        let remaining = 47000 - elapsed;
+        if(remaining < 0) remaining = 0;
+
+        setTimeout(() => {
+            // Hoàn thành đếm 47s
+            currentUser.spinsLeft++;
+            currentUser.totalBypasses++;
+            updateUserDB();
+            updateUserUI();
+            
+            localStorage.removeItem('yonkiPendingBypass_' + currentUser.idGame);
+            historyEl.classList.add('hidden');
+            resetBtn(btn);
+
+            alert("Thành công +1 lượt");
+        }, remaining);
     }
 
-    // --- VÒNG QUAY NHÂN PHẨM CHÍNH THỨC ---
+    function checkPendingBypass() {
+        if(!currentUser) return;
+        let pending = JSON.parse(localStorage.getItem('yonkiPendingBypass_' + currentUser.idGame));
+        if(pending) {
+            let elapsed = Date.now() - pending.time;
+            if(elapsed >= 47000) {
+                // Khách f5 trang mà đã qua 47s -> Cộng ngay
+                currentUser.spinsLeft++;
+                currentUser.totalBypasses++;
+                updateUserDB();
+                updateUserUI();
+                localStorage.removeItem('yonkiPendingBypass_' + currentUser.idGame);
+                alert("Hệ thống ghi nhận bạn đã hoàn thành duyệt link trước đó. Thành công +1 lượt");
+            } else {
+                // Chưa đủ 47s -> Chạy tiếp
+                startSilentCountdown(pending);
+            }
+        }
+    }
+
+    function resetBtn(btn) {
+        btn.innerHTML = `⚡ VƯỢT LINK (LINK4M)`;
+        btn.disabled = false;
+        updateUserUI();
+    }
+
+    // --- VÒNG QUAY LOGIC ---
     function spinWheel() {
-        if(currentUser.spinsLeft <= 0) return alert("Bạn đã hết lượt! Vui lòng bấm VƯỢT LINK để nhận thêm.");
+        if(currentUser.spinsLeft <= 0) return alert("Đã hết lượt! Bấm VƯỢT LINK để nhận thêm.");
         
         let btn = document.getElementById('spinBtn');
         btn.disabled = true;
@@ -433,14 +434,10 @@
         updateUserDB();
         updateUserUI();
 
-        // Tỉ lệ gốc cực thấp
         let winRate = 0.000000000000000001; 
-        
-        // Pity System: Mỗi 20 lần vượt + 5%
         let pityMultiplier = Math.floor(currentUser.totalBypasses / 20);
         winRate += (pityMultiplier * 5); 
 
-        // Nếu admin quay, tỉ lệ là 100% để test hiệu ứng hoặc tự quyết định
         if(currentUser.role === 'admin') winRate = 100; 
 
         let rand = Math.random() * 100;
@@ -460,30 +457,35 @@
             btn.disabled = false;
             if(isWin) {
                 if(currentUser.role === 'admin') {
-                    alert("Admin test vòng quay thành công! (Không lưu vào dữ liệu trúng thật)");
+                    alert("Admin test vòng quay thành công!");
                     return;
                 }
 
-                // Lưu dữ liệu người trúng hôm nay
                 let winnerData = { idGame: currentUser.idGame, idTiktok: currentUser.idTiktok };
                 localStorage.setItem('yonkiTodayWinner', JSON.stringify(winnerData));
                 
-                // Reset pity
                 currentUser.totalBypasses = 0;
                 updateUserDB();
 
                 alert(`🎉 NHÂN PHẨM CỰC ĐẠI! BẠN ĐÃ TRÚNG GIẢI HÔM NAY!`);
-                checkGlobalStatus(); // Tự động đóng web
+                checkGlobalStatus();
             } else {
                 alert("Chúc may mắn lần sau!");
             }
         }, 6000);
     }
 
-    // --- KHỞI ĐỘNG HỆ THỐNG TRÌNH DUYỆT ---
+    // --- AUTO LOGIN NẾU ĐÃ LƯU SESSION ---
     checkAutoReset();
-    checkUrlForReward();
-    if(!currentUser) checkGlobalStatus();
+    let sessionUserId = localStorage.getItem('yonkiSessionUser');
+    if(sessionUserId) {
+        let users = JSON.parse(localStorage.getItem('yonkiUsers'));
+        currentUser = users.find(u => u.idGame === sessionUserId);
+        if(currentUser) startSession();
+        else switchScreen('loginScreen');
+    } else {
+        switchScreen('loginScreen');
+    }
 
 </script>
 
