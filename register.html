@@ -1,1 +1,30 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký - YonkiVN 2026</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body class="center-layout">
+    <div class="cyber-bg"></div>
+    <div class="auth-panel glass-panel fade-in">
+        <h1>YONKIVN <span class="neon-green">INIT</span></h1>
+        <h2>TẠO HỒ SƠ MỚI</h2>
+        <p class="warning-text">⚠️ Sai ID Game/TikTok sẽ mất quyền lợi nhận giải.</p>
+        <form onsubmit="registerUser(event)">
+            <input type="text" id="regIdGame" placeholder="ID Game chính xác" required>
+            <input type="text" id="regIdTiktok" placeholder="ID TikTok chính xác" required>
+            <input type="password" id="regPass" placeholder="Tạo khóa bảo mật" required>
+            <button type="submit" class="btn-cyber" id="regBtn">XÁC NHẬN ĐĂNG KÝ</button>
+        </form>
+        <a href="login.html" class="switch-link">>> Hủy bỏ tiến trình <<</a>
+    </div>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
 
