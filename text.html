@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YonkiVN Official - Verify & Unlock Form</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #121212; 
+            color: #ffffff; 
+            text-align: center; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: #1e1e1e; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
+        }
+        h1 { color: #00ff88; text-transform: uppercase; margin-bottom: 5px; }
+        .subtitle { color: #aaa; margin-top: 0; margin-bottom: 20px; font-size: 0.9em; }
+        .date-badge { 
+            display: inline-block; 
+            background: #333; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            font-size: 0.9em; 
+            margin-bottom: 25px; 
+            color: #ffaa00; 
+            font-weight: bold;
+            border: 1px solid #ffaa00;
+        }
+        .task-box { 
+            background: #2a2a2a; 
+            border-radius: 10px; 
+            padding: 20px; 
+            margin: 15px 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            border: 1px solid #444; 
+            transition: 0.3s; 
+        }
+        .task-box.completed { 
+            border-color: #00ff88; 
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.15); 
+            background: #1a2c22;
+        }
+        .task-title { font-weight: bold; margin-bottom: 15px; text-align: center; font-size: 1.1em; color: #fff;}
+        button { 
+            background: #ff0055; 
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            font-size: 1em; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: 0.2s; 
+            width: 85%; 
+        }
+        button:hover { background: #ff3377; transform: scale(1.02); }
+        button:disabled { background: #555; cursor: not-allowed; transform: none; }
+        .status { margin-top: 12px; font-size: 0.9em; color: #888; }
+        .status.success { color: #00ff88; font-weight: bold; }
+        .status.checking { color: #ffaa00; font-style: italic; }
+        
+        #unlockBtn { 
+            background: linear-gradient(45deg, #00ff88, #00cc6a); 
+            color: #000; 
+            font-size: 1.2em; 
+            padding: 15px; 
+            width: 100%; 
+            margin-top: 30px; 
+            display: none; 
+            border-radius: 10px;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0,255,136,0.4);
+            animation: pulse 1.5s infinite;
+        }
+        #unlockBtn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        
+        .footer { margin-top: 40px; font-size: 0.8em; color: #555; border-top: 1px solid #333; padding-top: 20px;}
+        
+        /* Loader css */
+        .loader { 
+            border: 3px solid #333; 
+            border-top: 3px solid #ffaa00; 
+            border-radius: 50%; 
+            width: 14px; 
+            height: 14px; 
+            animation: spin 1s linear infinite; 
+            display: inline-block; 
+            vertical-align: middle; 
+            margin-right: 8px; 
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 255, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainApp">
+        <h1>YONKIVN OFFICIAL</h1>
+        <p class="subtitle">Hệ Thống Chống Gian Lận - Xác Minh Nhận KC</p>
+        <div class="date-badge">⏳ Thời gian: 17/07/2026 - 20/07/2026</div>
+
+        <div id="eventMessage" style="display: none; background: #3a1c1c; border: 1px solid #ff5555; color: #ff5555; padding: 20px; border-radius: 8px; font-size: 1.1em; font-weight: bold; margin: 30px 0;">
+            Sự kiện chưa bắt đầu hoặc đã kết thúc!
+        </div>
+
+        <div id="taskList">
+            <div class="task-box" id="task1">
+                <div class="task-title">1. Tham gia nhóm Telegram</div>
+                <button onclick="doTask(1, 'https://t.me/yonkivnofficial', 6000)">Tham Gia Ngay</button>
+                <div class="status" id="status1">Trạng thái: Chưa hoàn thành</div>
+            </div>
+            
+            <div class="task-box" id="task2">
+                <div class="task-title">2. Xem & Bình luận Video Shorts</div>
+                <button onclick="doTask(2, 'https://youtube.com/shorts/XtfwY39xkkw?si=PjBGzCsfPXKR9v3o', 12000)">Xem & Bình Luận</button>
+                <div class="status" id="status2">Trạng thái: Chưa hoàn thành</div>
+            </div>
+
+            <div class="task-box" id="task3">
+                <div class="task-title">3. Like, Bình luận & Đăng ký YouTube</div>
+                <button onclick="doTask(3, 'https://youtube.com/@yonkivnofficial?si=Gn5PNE7fb9NU0V9T', 12000)">Thực Hiện YouTube</button>
+                <div class="status" id="status3">Trạng thái: Chưa hoàn thành</div>
+            </div>
+
+            <div class="task-box" id="task4">
+                <div class="task-title">4. Like, Bình luận & Theo dõi TikTok</div>
+                <button onclick="doTask(4, 'https://vt.tiktok.com/ZSXD5ng6L/', 12000)">Thực Hiện TikTok</button>
+                <div class="status" id="status4">Trạng thái: Chưa hoàn thành</div>
+            </div>
+
+            <button id="unlockBtn" onclick="window.location.href='https://forms.gle/jbqPSJ5ts8XGG1nr5'">🎉 MỞ KHÓA FORM ĐIỀN ID 🎉</button>
+        </div>
+        
+        <div class="footer">
+            © 2026 by YonkiVN Official.<br>
+            <i>Hệ thống quét tự động hành vi thao tác ảo. Vui lòng làm đúng yêu cầu!</i>
+        </div>
+    </div>
+
+    <script>
+        // Cài đặt thời gian sự kiện (Theo giờ Việt Nam GMT+7)
+        const startDate = new Date('2026-07-17T00:00:00+07:00');
+        const endDate = new Date('2026-07-20T23:59:59+07:00');
+        const now = new Date();
+
+        // Check thời gian sự kiện
+        if (now < startDate || now > endDate) {
+            document.getElementById('taskList').style.display = 'none';
+            let msg = now < startDate 
+                ? 'Sự kiện chưa diễn ra!<br><br>Vui lòng quay lại vào lúc 0h00 ngày 17/07/2026.' 
+                : 'Sự kiện đã kết thúc vào ngày 20/07/2026.<br><br>Cảm ơn bạn đã quan tâm!';
+            document.getElementById('eventMessage').innerHTML = msg;
+            document.getElementById('eventMessage').style.display = 'block';
+        }
+
+        let taskStatus = {1: false, 2: false, 3: false, 4: false};
+
+        function doTask(id, url, waitTime) {
+            if(taskStatus[id]) return; // Nếu đã xong thì bỏ qua
+
+            // Chuyển hướng người dùng sang tab mới
+            window.open(url, '_blank');
+            
+            // Đổi giao diện UI sang chế độ "Đang check"
+            let btn = document.querySelector('#task' + id + ' button');
+            let status = document.getElementById('status' + id);
+            
+            btn.disabled = true;
+            btn.innerText = 'Đang quét hệ thống...';
+            btn.style.background = '#444';
+            status.innerHTML = '<span class="loader"></span> Đang chờ xác minh hành động (Khoảng ' + (waitTime/1000) + 's)...';
+            status.className = 'status checking';
+
+            // Giả lập thời gian server kiểm tra (Ép người dùng phải xem đủ thời gian)
+            setTimeout(() => {
+                taskStatus[id] = true;
+                btn.innerText = '✔️ Đã Hoàn Thành';
+                btn.style.background = '#00ff88';
+                btn.style.color = '#000';
+                document.getElementById('task' + id).classList.add('completed');
+                status.innerHTML = 'Thành công: Đã lưu kết quả!';
+                status.className = 'status success';
+                
+                checkAllCompleted();
+            }, waitTime);
+        }
+
+        function checkAllCompleted() {
+            let allDone = true;
+            for(let i=1; i<=4; i++){
+                if(!taskStatus[i]) allDone = false;
+            }
+            // Nếu hoàn thành 4 bước -> Mở form
+            if(allDone) {
+                document.getElementById('unlockBtn').style.display = 'block';
+                document.getElementById('unlockBtn').scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+        }
+    </script>
+</body>
+</html>
