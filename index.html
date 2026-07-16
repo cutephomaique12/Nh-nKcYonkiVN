@@ -3,212 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YonkiVN Official - Verify & Unlock Form</title>
+    <title>YonkiVN Official - Vòng Quay Nhân Phẩm</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #121212; 
-            color: #ffffff; 
-            text-align: center; 
-            margin: 0; 
-            padding: 20px; 
-        }
-        .container { 
-            max-width: 600px; 
-            margin: 0 auto; 
-            background: #1e1e1e; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
-        }
-        h1 { color: #00ff88; text-transform: uppercase; margin-bottom: 5px; }
-        .subtitle { color: #aaa; margin-top: 0; margin-bottom: 20px; font-size: 0.9em; }
-        .date-badge { 
-            display: inline-block; 
-            background: #333; 
-            padding: 8px 15px; 
-            border-radius: 20px; 
-            font-size: 0.9em; 
-            margin-bottom: 25px; 
-            color: #ffaa00; 
-            font-weight: bold;
-            border: 1px solid #ffaa00;
-        }
-        .task-box { 
-            background: #2a2a2a; 
-            border-radius: 10px; 
-            padding: 20px; 
-            margin: 15px 0; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            border: 1px solid #444; 
-            transition: 0.3s; 
-        }
-        .task-box.completed { 
-            border-color: #00ff88; 
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.15); 
-            background: #1a2c22;
-        }
-        .task-title { font-weight: bold; margin-bottom: 15px; text-align: center; font-size: 1.1em; color: #fff;}
-        button { 
-            background: #ff0055; 
-            color: white; 
-            border: none; 
-            padding: 12px 20px; 
-            border-radius: 8px; 
-            font-size: 1em; 
-            cursor: pointer; 
-            font-weight: bold; 
-            transition: 0.2s; 
-            width: 85%; 
-        }
-        button:hover { background: #ff3377; transform: scale(1.02); }
-        button:disabled { background: #555; cursor: not-allowed; transform: none; }
-        .status { margin-top: 12px; font-size: 0.9em; color: #888; }
-        .status.success { color: #00ff88; font-weight: bold; }
-        .status.checking { color: #ffaa00; font-style: italic; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: #1e1e1e; padding: 30px; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); width: 100%; max-width: 500px; text-align: center; }
+        h1 { color: #00ff88; margin-bottom: 20px; text-transform: uppercase; }
+        h2 { color: #ffaa00; margin-bottom: 15px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: #fff; }
+        button { width: 100%; background: #00ff88; color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #00cc6a; }
+        .btn-secondary { background: #444; color: #fff; }
+        .btn-secondary:hover { background: #555; }
+        .hidden { display: none !important; }
         
-        #unlockBtn { 
-            background: linear-gradient(45deg, #00ff88, #00cc6a); 
-            color: #000; 
-            font-size: 1.2em; 
-            padding: 15px; 
-            width: 100%; 
-            margin-top: 30px; 
-            display: none; 
-            border-radius: 10px;
-            text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(0,255,136,0.4);
-            animation: pulse 1.5s infinite;
-        }
-        #unlockBtn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        /* Vòng Quay Style */
+        .wheel-box { position: relative; width: 300px; height: 300px; margin: 20px auto; border-radius: 50%; border: 5px solid #333; overflow: hidden; }
+        .wheel { width: 100%; height: 100%; border-radius: 50%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.1, 1); background: conic-gradient(
+            #ff3333 0deg 30deg, #555 30deg 60deg, #333 60deg 90deg, #555 90deg 120deg,
+            #ffaa00 120deg 150deg, #333 150deg 180deg, #555 180deg 210deg, #333 210deg 240deg,
+            #ff3333 240deg 270deg, #555 270deg 300deg, #333 300deg 330deg, #555 330deg 360deg
+        ); }
+        .spin-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #fff; color: #000; font-weight: bold; border-radius: 50%; border: 5px solid #00ff88; cursor: pointer; z-index: 10; font-size: 18px; }
+        .pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 30px solid #fff; z-index: 20; }
         
-        .footer { margin-top: 40px; font-size: 0.8em; color: #555; border-top: 1px solid #333; padding-top: 20px;}
-        
-        /* Loader css */
-        .loader { 
-            border: 3px solid #333; 
-            border-top: 3px solid #ffaa00; 
-            border-radius: 50%; 
-            width: 14px; 
-            height: 14px; 
-            animation: spin 1s linear infinite; 
-            display: inline-block; 
-            vertical-align: middle; 
-            margin-right: 8px; 
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(0, 255, 136, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
-        }
+        .alert { background: #ff3333; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; display: none; }
+        .success-box { background: #1a2c22; border: 1px solid #00ff88; padding: 15px; border-radius: 8px; margin-top: 20px; }
+        .proof-img { max-width: 100%; border-radius: 8px; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="container" id="mainApp">
+
+<div class="container">
+    <div id="globalClosedMsg" class="alert">
+        SỰ KIỆN HÔM NAY ĐÃ CÓ NGƯỜI TRÚNG! WEB TẠM ĐÓNG.<br>
+        <div id="winnerDisplayInfo" style="margin-top: 10px; font-size: 14px; color: #fff;"></div>
+    </div>
+
+    <!-- MÀN HÌNH ĐĂNG NHẬP -->
+    <div id="loginScreen">
         <h1>YONKIVN OFFICIAL</h1>
-        <p class="subtitle">Hệ Thống Chống Gian Lận - Xác Minh Nhận KC</p>
-        <div class="date-badge">⏳ Thời gian: 17/07/2026 - 20/07/2026</div>
+        <h2>Đăng Nhập</h2>
+        <input type="text" id="loginId" placeholder="ID Game hoặc ID TikTok">
+        <input type="password" id="loginPass" placeholder="Mật khẩu">
+        <button onclick="login()">Đăng Nhập</button>
+        <button class="btn-secondary" onclick="switchScreen('registerScreen')">Tạo Tài Khoản</button>
+    </div>
 
-        <div id="eventMessage" style="display: none; background: #3a1c1c; border: 1px solid #ff5555; color: #ff5555; padding: 20px; border-radius: 8px; font-size: 1.1em; font-weight: bold; margin: 30px 0;">
-            Sự kiện chưa bắt đầu hoặc đã kết thúc!
-        </div>
+    <!-- MÀN HÌNH ĐĂNG KÝ -->
+    <div id="registerScreen" class="hidden">
+        <h1>TẠO TÀI KHOẢN</h1>
+        <p style="color: #ffaa00; font-size: 12px; margin-bottom: 10px;">Lưu ý: Nhập sai ID không hỗ trợ chỉnh sửa!</p>
+        <input type="text" id="regIdGame" placeholder="ID Game (Bắt buộc)">
+        <input type="text" id="regIdTiktok" placeholder="ID TikTok (Bắt buộc)">
+        <input type="password" id="regPass" placeholder="Mật khẩu">
+        <button onclick="register()">Đăng Ký</button>
+        <button class="btn-secondary" onclick="switchScreen('loginScreen')">Quay lại Đăng Nhập</button>
+    </div>
 
-        <div id="taskList">
-            <div class="task-box" id="task1">
-                <div class="task-title">1. Tham gia nhóm Telegram</div>
-                <button onclick="doTask(1, 'https://t.me/yonkivnofficial', 6000)">Tham Gia Ngay</button>
-                <div class="status" id="status1">Trạng thái: Chưa hoàn thành</div>
-            </div>
-            
-            <div class="task-box" id="task2">
-                <div class="task-title">2. Xem hết & Bình luận Video</div>
-                <button onclick="doTask(2, 'https://youtu.be/uACbE3HYgOw?si=aLYH4use1oeR7NM5', 12000)">Xem & Bình Luận</button>
-                <div class="status" id="status2">Trạng thái: Chưa hoàn thành</div>
-            </div>
-
-            <div class="task-box" id="task3">
-                <div class="task-title">3. Like, Bình luận & Đăng ký YouTube</div>
-                <button onclick="doTask(3, 'https://youtube.com/@yonkivnofficial?si=Gn5PNE7fb9NU0V9T', 12000)">Thực Hiện YouTube</button>
-                <div class="status" id="status3">Trạng thái: Chưa hoàn thành</div>
-            </div>
-
-            <div class="task-box" id="task4">
-                <div class="task-title">4. Like, Bình luận & Theo dõi TikTok</div>
-                <button onclick="doTask(4, 'https://vt.tiktok.com/ZSXD5ng6L/', 12000)">Thực Hiện TikTok</button>
-                <div class="status" id="status4">Trạng thái: Chưa hoàn thành</div>
-            </div>
-
-            <button id="unlockBtn" onclick="window.location.href='https://forms.gle/jbqPSJ5ts8XGG1nr5'">🎉 MỞ KHÓA FORM ĐIỀN ID 🎉</button>
-        </div>
+    <!-- MÀN HÌNH USER (VÒNG QUAY) -->
+    <div id="userScreen" class="hidden">
+        <h1>VÒNG QUAY NHÂN PHẨM</h1>
+        <p>Hôm nay bạn còn: <strong id="spinsLeft" style="color:#00ff88">3</strong> lượt quay</p>
         
-        <div class="footer">
-            © 2026 by YonkiVN Official.<br>
-            <i>Hệ thống quét tự động hành vi thao tác ảo. Vui lòng làm đúng yêu cầu!</i>
+        <div class="wheel-box">
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel"></div>
+            <button class="spin-btn" id="spinBtn" onclick="spinWheel()">QUAY</button>
+        </div>
+
+        <button class="btn-secondary" onclick="doTask()">Vượt Link Nhận 1 Lượt Quay</button>
+        <button class="btn-secondary" style="margin-top: 20px" onclick="logout()">Đăng Xuất</button>
+    </div>
+
+    <!-- MÀN HÌNH XÁC NHẬN TRÚNG THƯỞNG -->
+    <div id="winnerScreen" class="hidden">
+        <h1>🎉 CHÚC MỪNG BẠN 🎉</h1>
+        <p>Bạn đã trúng 25KC! Hệ thống đã ghi nhận thông tin của bạn.</p>
+        <div class="success-box">
+            <p>ID Game: <strong id="winIdGame"></strong></p>
+            <p>ID TikTok: <strong id="winIdTiktok"></strong></p>
+            <p>Trạng thái: <strong id="winStatus" style="color: #ffaa00;">CHỜ DUYỆT</strong></p>
         </div>
     </div>
 
-    <script>
-        // Cài đặt thời gian sự kiện (Theo giờ Việt Nam GMT+7)
-        const startDate = new Date('2026-07-16T00:00:00+07:00');
-        const endDate = new Date('2026-07-20T23:59:59+07:00');
-        const now = new Date();
+    <!-- MÀN HÌNH ADMIN -->
+    <div id="adminScreen" class="hidden">
+        <h1 style="color: #ff3333;">ADMIN PANEL</h1>
+        <div class="success-box">
+            <h3>Người Trúng Hôm Nay:</h3>
+            <p>ID Game: <strong id="adminWinGame">Chưa có</strong></p>
+            <p>ID TikTok: <strong id="adminWinTiktok">Chưa có</strong></p>
+            <select id="adminStatusUpdate">
+                <option value="Chờ duyệt">Chờ duyệt</option>
+                <option value="Đã duyệt">Đã duyệt (Nạp xong)</option>
+                <option value="Hủy bỏ">Hủy bỏ (Gian lận)</option>
+            </select>
+            <input type="text" id="adminImgUrl" placeholder="Link ảnh bill giao dịch (Nếu có)">
+            <button style="background: #ffaa00;" onclick="adminSave()">Cập Nhật Hệ Thống</button>
+        </div>
+        <button class="btn-secondary" style="margin-top: 20px" onclick="logout()">Đăng Xuất Admin</button>
+    </div>
+</div>
 
-        // Check thời gian sự kiện
-        if (now < startDate || now > endDate) {
-            document.getElementById('taskList').style.display = 'none';
-            let msg = now < startDate 
-                ? 'Sự kiện chưa diễn ra!<br><br>Vui lòng quay lại vào lúc 0h00 ngày 17/07/2026.' 
-                : 'Sự kiện đã kết thúc vào ngày 20/07/2026.<br><br>Cảm ơn bạn đã quan tâm!';
-            document.getElementById('eventMessage').innerHTML = msg;
-            document.getElementById('eventMessage').style.display = 'block';
-        }
+<script>
+    // --- KHỞI TẠO DATABASE MÔ PHỎNG (LocalStorage) ---
+    if(!localStorage.getItem('yonkiUsers')) localStorage.setItem('yonkiUsers', JSON.stringify([]));
+    if(!localStorage.getItem('yonkiTodayWinner')) localStorage.setItem('yonkiTodayWinner', JSON.stringify(null));
 
-        let taskStatus = {1: false, 2: false, 3: false, 4: false};
+    let currentUser = null;
+    let currentRotation = 0;
 
-        function doTask(id, url, waitTime) {
-            if(taskStatus[id]) return; // Nếu đã xong thì bỏ qua
+    // --- HÀM CHUYỂN MÀN HÌNH ---
+    function switchScreen(screenId) {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('registerScreen').classList.add('hidden');
+        document.getElementById('userScreen').classList.add('hidden');
+        document.getElementById('adminScreen').classList.add('hidden');
+        document.getElementById('winnerScreen').classList.add('hidden');
+        document.getElementById(screenId).classList.remove('hidden');
+        checkGlobalStatus();
+    }
 
-            // Chuyển hướng người dùng sang tab mới
-            window.open(url, '_blank');
+    // --- KIỂM TRA TRẠNG THÁI WEB (CÓ NGƯỜI TRÚNG CHƯA) ---
+    function checkGlobalStatus() {
+        let winner = JSON.parse(localStorage.getItem('yonkiTodayWinner'));
+        let closedMsg = document.getElementById('globalClosedMsg');
+        
+        if(winner) {
+            closedMsg.style.display = 'block';
+            let imgHtml = winner.proofImg ? `<img src="${winner.proofImg}" class="proof-img">` : '';
+            document.getElementById('winnerDisplayInfo').innerHTML = `
+                ID TikTok: [${winner.idTiktok}]<br>
+                Trạng thái: <strong>${winner.status}</strong><br>
+                ${imgHtml}
+            `;
             
-            // Đổi giao diện UI sang chế độ "Đang check"
-            let btn = document.querySelector('#task' + id + ' button');
-            let status = document.getElementById('status' + id);
-            
-            btn.disabled = true;
-            btn.innerText = 'Đang quét hệ thống...';
-            btn.style.background = '#444';
-            status.innerHTML = '<span class="loader"></span> Đang chờ xác minh hành động (Khoảng ' + (waitTime/1000) + 's)...';
-            status.className = 'status checking';
+            // Nếu không phải admin thì khóa mọi thứ
+            if(currentUser && currentUser.username !== 'yonkivnofficial') {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('registerScreen').classList.add('hidden');
+                document.getElementById('userScreen').classList.add('hidden');
+            }
+        } else {
+            closedMsg.style.display = 'none';
+        }
+    }
 
-            // Giả lập thời gian server kiểm tra (Ép người dùng phải xem đủ thời gian)
-            setTimeout(() => {
-                taskStatus[id] = true;
-                btn.innerText = '✔️ Đã Hoàn Thành';
-                btn.style.background = '#00ff88';
-                btn.style.color = '#000';
-                document.getElementById('task' + id).classList.add('completed');
-                status.innerHTML = 'Thành công: Đã lưu kết quả!';
-                status.className = 'status success';
-                
-                checkAllCompleted();
-            }, waitTime);
+    // --- ĐĂNG KÝ TÀI KHOẢN ---
+    function register() {
+        let idGame = document.getElementById('regIdGame').value.trim();
+        let idTiktok = document.getElementById('regIdTiktok').value.trim();
+        let pass = document.getElementById('regPass').value.trim();
+
+        if(!idGame || !idTiktok || !pass) return alert("Vui lòng nhập đủ thông tin!");
+        
+        let users = JSON.parse(localStorage.getItem('yonkiUsers'));
+        if(users.find(u => u.idGame === idGame || u.idTiktok === idTiktok)) {
+            return alert("ID Game hoặc TikTok đã tồn tại!");
         }
 
-        function checkAllCompleted() {
-            let allDone = true;
-            for(let i=1; i<=4; i++){
-                if(!taskStatus[i]) allDone = false;
-            }
-            // Nếu hoàn thành 4 bước -> Mở form
-            if(allDone) {
-                document.getElementById('unlockBtn').style.display = 'block';
-                document.getElementById('unlockBtn').scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }
+        users.push({ idGame: idGame, idTiktok: idTiktok, pass: pass, spinsLeft: 0 });
+        localStorage.setItem('yonkiUsers', JSON.stringify(users));
+        alert("Đăng ký thành công! Hãy đăng nhập.");
+        switchScreen('loginScreen');
+    }
+
+    // --- ĐĂNG NHẬP ---
+    function login() {
+        let loginId = document.getElementById('loginId').value.trim();
+        let pass = document.getElementById('loginPass').value.trim();
+
+        // Check Admin
+        if(loginId === 'yonkivnofficial' && pass === 'honghiep') {
+            currentUser = { username: 'yonkivnofficial', role: 'admin' };
+            loadAdminPanel();
+            return switchScreen('adminScreen');
         }
-    </script>
+
+        let users = JSON.parse(localStorage.getItem('yonkiUsers'));
+        let user = users.find(u => (u.idGame === loginId || u.idTiktok === loginId) && u.pass === pass);
+
+        if(user) {
+            currentUser = user;
+            // Nếu đã có người trúng hôm nay
+            let winner = JSON.parse(localStorage.getItem('yonkiTodayWinner'));
+            if(winner) {
+                if(winner.idGame === user.idGame) {
+                    showWinnerScreen(winner);
+                } else {
+                    checkGlobalStatus(); // Hiện thông báo web đóng
+                }
+                return;
+            }
+            document.getElementById('spinsLeft').innerText = user.spinsLeft;
+            switchScreen('userScreen');
+        } else {
+            alert("Tài khoản hoặc mật khẩu không đúng!");
+        }
+    }
+
+    function logout() {
+        currentUser = null;
+        switchScreen('loginScreen');
+    }
+
+    // --- VƯỢT LINK LẤY LƯỢT ---
+    function doTask() {
+        if(currentUser.spinsLeft >= 3) return alert("Bạn đã đạt tối đa 3 lượt quay dự trữ!");
+        alert("Đang chuyển hướng sang link vượt... (Mô phỏng thành công)");
+        currentUser.spinsLeft++;
+        updateUserDB();
+        document.getElementById('spinsLeft').innerText = currentUser.spinsLeft;
+    }
+
+    // --- VÒNG QUAY LOGIC ---
+    function spinWheel() {
+        if(currentUser.spinsLeft <= 0) return alert("Bạn hết lượt quay! Vui lòng vượt link để nhận thêm.");
+        
+        let btn = document.getElementById('spinBtn');
+        btn.disabled = true;
+        currentUser.spinsLeft--;
+        updateUserDB();
+        document.getElementById('spinsLeft').innerText = currentUser.spinsLeft;
+
+        // Tỉ lệ trúng 0.000000000000000001% (Cực kỳ thấp)
+        let rand = Math.random() * 100;
+        let isWin = rand <= 0.000000000000000001;
+        
+        // 12 ô: Ô trúng là 0, 4, 8 (Màu đỏ/vàng). Còn lại là ô Xịt.
+        let winSlots = [0, 4, 8];
+        let loseSlots = [1, 2, 3, 5, 6, 7, 9, 10, 11];
+        
+        let targetSlot = isWin ? winSlots[Math.floor(Math.random()*winSlots.length)] : loseSlots[Math.floor(Math.random()*loseSlots.length)];
+        
+        // Tính toán góc quay (Mỗi ô 30 độ)
+        let slotDegree = 360 / 12;
+        let targetDegree = (targetSlot * slotDegree) + (slotDegree / 2);
+        
+        // Quay thêm 5 vòng (1800 độ) cho đẹp
+        currentRotation += 1800 + (360 - targetDegree) - (currentRotation % 360);
+        
+        let wheel = document.getElementById('wheel');
+        wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+        setTimeout(() => {
+            btn.disabled = false;
+            if(isWin) {
+                // XỬ LÝ KHI TRÚNG
+                let winnerData = {
+                    idGame: currentUser.idGame,
+                    idTiktok: currentUser.idTiktok,
+                    status: 'Chờ duyệt',
+                    proofImg: ''
+                };
+                localStorage.setItem('yonkiTodayWinner', JSON.stringify(winnerData));
+                showWinnerScreen(winnerData);
+            } else {
+                alert("Chúc bạn may mắn lần sau! Trúng 100 Xu ảo.");
+            }
+        }, 4000); // 4 giây hiệu ứng quay
+    }
+
+    function updateUserDB() {
+        let users = JSON.parse(localStorage.getItem('yonkiUsers'));
+        let index = users.findIndex(u => u.idGame === currentUser.idGame);
+        if(index !== -1) {
+            users[index] = currentUser;
+            localStorage.setItem('yonkiUsers', JSON.stringify(users));
+        }
+    }
+
+    // --- HIỆN MÀN HÌNH NGƯỜI CHIẾN THẮNG ---
+    function showWinnerScreen(winner) {
+        document.getElementById('winIdGame').innerText = winner.idGame;
+        document.getElementById('winIdTiktok').innerText = winner.idTiktok;
+        
+        let statusEl = document.getElementById('winStatus');
+        statusEl.innerText = winner.status;
+        if(winner.status === 'Đã duyệt') statusEl.style.color = '#00ff88';
+        if(winner.status === 'Hủy bỏ') statusEl.style.color = '#ff3333';
+
+        switchScreen('winnerScreen');
+    }
+
+    // --- ADMIN PANEL LOGIC ---
+    function loadAdminPanel() {
+        let winner = JSON.parse(localStorage.getItem('yonkiTodayWinner'));
+        if(winner) {
+            document.getElementById('adminWinGame').innerText = winner.idGame;
+            document.getElementById('adminWinTiktok').innerText = winner.idTiktok;
+            document.getElementById('adminStatusUpdate').value = winner.status;
+            document.getElementById('adminImgUrl').value = winner.proofImg;
+        } else {
+            document.getElementById('adminWinGame').innerText = "Chưa có ai trúng";
+            document.getElementById('adminWinTiktok').innerText = "Chưa có ai trúng";
+        }
+    }
+
+    function adminSave() {
+        let winner = JSON.parse(localStorage.getItem('yonkiTodayWinner'));
+        if(!winner) return alert("Hôm nay chưa có ai trúng để duyệt!");
+
+        winner.status = document.getElementById('adminStatusUpdate').value;
+        winner.proofImg = document.getElementById('adminImgUrl').value;
+        localStorage.setItem('yonkiTodayWinner', JSON.stringify(winner));
+        alert("Đã cập nhật hệ thống thành công!");
+    }
+
+    // Chạy khi vừa mở web
+    checkGlobalStatus();
+</script>
+
 </body>
 </html>
