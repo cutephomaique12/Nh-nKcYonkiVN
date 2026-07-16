@@ -31,7 +31,7 @@
         
         .stats-panel { display: flex; justify-content: space-between; background: rgba(0, 0, 0, 0.5); padding: 15px 20px; border-radius: 16px; border: 1px solid rgba(0, 229, 255, 0.2); margin-bottom: 20px; font-size: 16px; }
         .stats-panel span { color: #00e5ff; font-weight: bold; font-size: 24px; font-family: 'Orbitron', sans-serif; }
-        .pity-alert { font-size: 15px; color: #ff0055; margin-top: 10px; font-weight: bold; text-shadow: 0 0 10px rgba(255,0,85,0.5); }
+        .pity-alert { font-size: 13px; color: #ffaa00; margin-top: 10px; font-weight: bold; text-shadow: 0 0 5px rgba(255,170,0,0.5); border: 1px dashed #ffaa00; padding: 5px; border-radius: 8px;}
         
         .wheel-container { position: relative; width: 320px; height: 320px; margin: 30px auto; }
         .wheel-border { position: absolute; top: -12px; left: -12px; right: -12px; bottom: -12px; border-radius: 50%; border: 2px dashed rgba(0, 255, 136, 0.3); animation: spinBorder 15s linear infinite; }
@@ -65,8 +65,11 @@
         .alert { background: rgba(255, 0, 85, 0.1); padding: 25px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(255,0,85,0.4); box-shadow: 0 0 30px rgba(255, 0, 85, 0.2); }
         .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #00ff88; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 10px; }
         
-        .history-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px dashed rgba(0,255,136,0.3); font-size: 14px; text-align: left; }
-        .history-box a { color: #00e5ff; word-break: break-all; }
+        /* Box UI cho Lịch sử & Xếp hạng */
+        .info-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px dashed rgba(0,255,136,0.3); font-size: 14px; text-align: left; }
+        .info-box h3 { color: #ffd700; margin-bottom: 10px; font-family: 'Orbitron', sans-serif; font-size: 15px; text-align: center; }
+        .winner-item, .history-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); font-size: 13px; }
+        .history-item { color: #bbb; }
         
         @keyframes spinBorder { 100% { transform: rotate(360deg); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -75,7 +78,6 @@
 <body>
 
 <div class="container">
-    <!-- MÀN HÌNH ĐĂNG NHẬP (LUÔN HIỆN ĐẦU TIÊN) -->
     <div id="loginScreen">
         <h1>YONKIVN OFFICIAL</h1>
         <h2>ĐĂNG NHẬP HỆ THỐNG</h2>
@@ -85,7 +87,6 @@
         <button class="btn-secondary" onclick="switchScreen('registerScreen')">Tạo Tài Khoản Mới</button>
     </div>
 
-    <!-- MÀN HÌNH ĐĂNG KÝ -->
     <div id="registerScreen" class="hidden">
         <h1>ĐĂNG KÝ ID</h1>
         <p style="color: #ff0055; font-size: 14px; margin-bottom: 15px; font-weight: bold;">⚠️ Cảnh báo: Sai ID không hỗ trợ nhận giải!</p>
@@ -96,14 +97,12 @@
         <button class="btn-secondary" onclick="switchScreen('loginScreen')">Quay Lại</button>
     </div>
 
-    <!-- THÔNG BÁO GLOBAL TỪ HỆ THỐNG -->
     <div id="globalClosedMsg" class="alert hidden">
         <h1 style="color: #ff0055; font-size: 24px;">HỆ THỐNG THÔNG BÁO</h1>
         <div id="closedText" style="margin-top: 15px; font-size: 18px; color: #fff; font-weight: bold; line-height: 1.5;"></div>
         <button class="btn-secondary" style="margin-top: 20px" onclick="logout()">Đăng Xuất</button>
     </div>
 
-    <!-- MÀN HÌNH CHÍNH (USER VÀ ADMIN) -->
     <div id="userScreen" class="hidden">
         <div id="adminPanel" class="hidden" style="background: rgba(255,0,85,0.1); padding: 15px; border-radius: 12px; border: 1px solid #ff0055; margin-bottom: 20px; text-align: left;">
             <h3 style="color: #ff0055; margin-bottom: 10px; font-family: 'Orbitron';">🔧 QUẢN TRỊ VIÊN</h3>
@@ -117,11 +116,13 @@
         <h1>VÒNG QUAY NHÂN PHẨM</h1>
         
         <div class="stats-panel">
-            <div style="text-align: left;">LƯỢT QUAY<br><span id="spinsLeft">0</span></div>
+            <div style="text-align: left;">LƯỢT QUAY<br><span id="spinsLeft" style="color: #00ff88;">0</span></div>
             <div style="text-align: right;">ĐÃ VƯỢT<br><span id="totalBypasses">0</span> LẦN</div>
         </div>
-        <div id="pityAlert" class="pity-alert hidden">⚡ Đang kích hoạt: +<span id="pityPercent">0</span>% Tỉ Lệ Trúng</div>
-        <p style="color: #888; font-size: 13px; margin-top: 5px;">Giới hạn: <span id="dailyLimitText" style="color: #00ff88;">0</span>/4 lần vượt hôm nay</p>
+        
+        <!-- Bể chứa ngầm toàn server -->
+        <div id="pityAlert" class="pity-alert">🌟 Năng lượng Server: <span id="globalEnergy">Đang tích tụ...</span></div>
+        <p style="color: #888; font-size: 13px; margin-top: 5px;">Giới hạn cá nhân: <span id="dailyLimitText" style="color: #00ff88;">0</span>/4 lần vượt hôm nay</p>
         
         <div class="wheel-container">
             <div class="wheel-border"></div>
@@ -132,10 +133,22 @@
 
         <button id="bypassBtn" onclick="startBypass()">⚡ VƯỢT LINK (LINK4M)</button>
         
-        <div id="linkHistory" class="history-box hidden">
-            <strong style="color: #00ff88;">[Lịch Sử Link Đang Duyệt]</strong><br>
-            Bạn có 1 link đang trong quá trình duyệt ngầm. Nếu lỡ tay tắt tab vượt, bạn có thể ấn vào link dưới đây để mở lại:<br>
-            <a href="#" target="_blank" id="currentLink">Đang tải link...</a>
+        <div id="linkHistory" class="info-box hidden">
+            <strong style="color: #00ff88;">[Link Đang Duyệt]</strong><br>
+            Bạn có 1 link đang trong quá trình duyệt ngầm. Nếu lỡ tay tắt tab, hãy ấn vào link dưới đây để tiếp tục:<br>
+            <a href="#" target="_blank" id="currentLink" style="color: #00e5ff; word-break: break-all;">Đang tải link...</a>
+        </div>
+
+        <!-- BẢNG XẾP HẠNG -->
+        <div class="info-box">
+            <h3>🏆 BẢNG VÀNG NHÂN PHẨM 🏆</h3>
+            <div id="topWinnerList"></div>
+        </div>
+
+        <!-- LỊCH SỬ CÁ NHÂN -->
+        <div class="info-box">
+            <h3 style="color: #00e5ff;">🕒 LỊCH SỬ GẦN ĐÂY</h3>
+            <div id="personalHistoryList"></div>
         </div>
 
         <button class="btn-secondary" style="margin-top: 20px" onclick="logout()">Đăng Xuất</button>
@@ -159,7 +172,11 @@
 
     // --- KHỞI TẠO CƠ SỞ DỮ LIỆU ---
     if(!localStorage.getItem('yonkiUsers')) localStorage.setItem('yonkiUsers', JSON.stringify([]));
-    if(!localStorage.getItem('yonkiTotalPrizes')) localStorage.setItem('yonkiTotalPrizes', '5'); // Mặc định 5 giải
+    if(!localStorage.getItem('yonkiTotalPrizes')) localStorage.setItem('yonkiTotalPrizes', '5');
+    if(!localStorage.getItem('yonkiTopHistory')) localStorage.setItem('yonkiTopHistory', JSON.stringify([]));
+    
+    // Bể chứa hút máu toàn Server
+    if(!localStorage.getItem('yonkiGlobalBypasses')) localStorage.setItem('yonkiGlobalBypasses', '0'); 
     
     let currentUser = null;
     let currentRotation = 0;
@@ -180,6 +197,7 @@
 
             localStorage.setItem('yonkiTodayWinner', JSON.stringify(null));
             localStorage.setItem('yonkiLastDate', today);
+            localStorage.setItem('yonkiGlobalBypasses', '0'); // Reset bể ngầm sang ngày mới
         }
     }
 
@@ -200,7 +218,7 @@
         let users = JSON.parse(localStorage.getItem('yonkiUsers'));
         if(users.find(u => u.idGame === idGame || u.idTiktok === idTiktok)) return alert("ID đã được đăng ký!");
 
-        users.push({ idGame, idTiktok, pass, spinsLeft: 0, totalBypasses: 0, role: 'user', dailyBypasses: { date: '', count: 0 } });
+        users.push({ idGame, idTiktok, pass, spinsLeft: 0, totalBypasses: 0, role: 'user', dailyBypasses: { date: '', count: 0 }, personalLogs: [] });
         localStorage.setItem('yonkiUsers', JSON.stringify(users));
         alert("Đăng ký thành công! Hãy đăng nhập.");
         switchScreen('loginScreen');
@@ -214,7 +232,7 @@
             let users = JSON.parse(localStorage.getItem('yonkiUsers'));
             let adminIndex = users.findIndex(u => u.role === 'admin');
             if(adminIndex === -1) {
-                currentUser = { idGame: 'ADMIN', idTiktok: 'YONKIVN', pass: 'honghiep', spinsLeft: 100000, totalBypasses: 0, role: 'admin', dailyBypasses: { date: '', count: 0 } };
+                currentUser = { idGame: 'ADMIN', idTiktok: 'YONKIVN', pass: 'honghiep', spinsLeft: 100000, totalBypasses: 0, role: 'admin', dailyBypasses: { date: '', count: 0 }, personalLogs: [] };
                 users.push(currentUser);
                 localStorage.setItem('yonkiUsers', JSON.stringify(users));
             } else {
@@ -245,12 +263,14 @@
             switchScreen('userScreen');
         } else {
             document.getElementById('adminPanel').classList.add('hidden');
-            checkGlobalStatus(); // User thường mới bị kiểm tra block
+            checkGlobalStatus(); 
         }
         
         if(!document.getElementById('userScreen').classList.contains('hidden')) {
             updateUserUI();
-            checkPendingBypass(); // Check xem có đang đếm ngầm không
+            renderLeaderboard();
+            renderHistory();
+            checkPendingBypass(); 
         }
     }
 
@@ -294,14 +314,44 @@
         }
         document.getElementById('dailyLimitText').innerText = currentUser.dailyBypasses.count;
         
-        let pityEl = document.getElementById('pityAlert');
-        if(currentUser.totalBypasses >= 20) {
-            let pityMultiplier = Math.floor(currentUser.totalBypasses / 20);
-            document.getElementById('pityPercent').innerText = pityMultiplier * 5;
-            pityEl.classList.remove('hidden');
-        } else {
-            pityEl.classList.add('hidden');
+        let gBypasses = parseInt(localStorage.getItem('yonkiGlobalBypasses')) || 0;
+        let energyLevel = Math.min(Math.floor((gBypasses % 20) / 20 * 100), 99);
+        document.getElementById('globalEnergy').innerText = `${energyLevel}%`;
+    }
+
+    function addLog(action) {
+        if(!currentUser.personalLogs) currentUser.personalLogs = [];
+        let time = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+        currentUser.personalLogs.unshift(`[${time}] ${action}`);
+        if(currentUser.personalLogs.length > 5) currentUser.personalLogs.pop(); // Giữ 5 dòng mới nhất
+        updateUserDB();
+        renderHistory();
+    }
+
+    function renderHistory() {
+        let listEl = document.getElementById('personalHistoryList');
+        if(!currentUser.personalLogs || currentUser.personalLogs.length === 0) {
+            listEl.innerHTML = '<div class="history-item">Chưa có hoạt động nào...</div>';
+            return;
         }
+        listEl.innerHTML = '';
+        currentUser.personalLogs.forEach(log => {
+            listEl.innerHTML += `<div class="history-item">${log}</div>`;
+        });
+    }
+
+    function renderLeaderboard() {
+        let history = JSON.parse(localStorage.getItem('yonkiTopHistory'));
+        let listEl = document.getElementById('topWinnerList');
+        if(history.length === 0) {
+            listEl.innerHTML = '<div class="winner-item" style="color:#aaa; justify-content:center;">Chưa có huyền thoại nào...</div>';
+            return;
+        }
+        listEl.innerHTML = '';
+        history.sort((a,b) => b.wins - a.wins).slice(0, 5).forEach(h => {
+            let hiddenId = h.idTiktok.substring(0, 3) + '***';
+            listEl.innerHTML += `<div class="winner-item"><span>🌟 ${hiddenId}</span> <span style="color:#00ff88">${h.wins} Lần Trúng</span></div>`;
+        });
     }
 
     function updateUserDB() {
@@ -319,7 +369,7 @@
         alert(`Đã cập nhật: Kho quà hiện có ${newStock} giải!`);
     }
 
-    // --- CƠ CHẾ VƯỢT LINK NGẦM (GIẢ LẬP XÁC MINH) ---
+    // --- SỬA LỖI API CORS BẰNG ALLORIGINS PROXY HOẶC FALLBACK ---
     function startBypass() {
         if(currentUser.role === 'admin') return alert("Admin có sẵn 100k lượt, không cần vượt link!");
         
@@ -327,53 +377,56 @@
         if(currentUser.dailyBypasses.date !== today) currentUser.dailyBypasses = { date: today, count: 0 };
 
         if(currentUser.dailyBypasses.count >= 4) {
-            return alert("🚫 Mỗi mạng / thiết bị chỉ được phép vượt tối đa 4 lần/ngày!");
+            return alert("🚫 Mỗi thiết bị chỉ được phép vượt 4 lần/ngày!");
         }
 
         let pending = JSON.parse(localStorage.getItem('yonkiPendingBypass_' + currentUser.idGame));
-        if(pending) return alert("Hệ thống đang duyệt 1 link của bạn rồi. Vui lòng chờ!");
+        if(pending) return alert("Bạn đang có 1 link chờ duyệt. Vui lòng đợi!");
 
         let btn = document.getElementById('bypassBtn');
         btn.innerHTML = `<span class="loader"></span> ĐANG KHỞI TẠO LINK...`;
         btn.disabled = true;
 
         let destUrl = "https://youtube.com/@yonkivnofficial"; 
-        let apiUrl = `https://link4m.co/api-shorten/v2?api=${API_KEY_LINK4M}&url=${encodeURIComponent(destUrl)}`;
+        
+        // Dùng proxy để vượt lỗi CORS chặn API
+        let link4mUrl = `https://link4m.co/api-shorten/v2?api=${API_KEY_LINK4M}&url=${encodeURIComponent(destUrl)}`;
+        let proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(link4mUrl)}`;
 
-        fetch(apiUrl)
+        fetch(proxyUrl)
         .then(res => res.json())
         .then(data => {
-            if(data.status === 'success' || data.shortenedUrl) {
-                let shortUrl = data.shortenedUrl;
-                
-                // Mở link ở tab mới (Khách sẽ tự động bị văng sang tab kia)
-                window.open(shortUrl, '_blank'); 
-
-                // Lưu trạng thái duyệt ngầm
-                currentUser.dailyBypasses.count++;
-                updateUserDB();
-                
-                let pendingData = { link: shortUrl, time: Date.now() };
-                localStorage.setItem('yonkiPendingBypass_' + currentUser.idGame, JSON.stringify(pendingData));
-
-                startSilentCountdown(pendingData);
+            let parsedData = JSON.parse(data.contents); // Dữ liệu thật nằm trong contents
+            if(parsedData.status === 'success' || parsedData.shortenedUrl) {
+                processBypassLink(parsedData.shortenedUrl);
             } else {
-                alert("Lỗi hệ thống tạo link!");
-                resetBtn(btn);
+                throw new Error("Lỗi API Trả về");
             }
         })
         .catch(err => {
-            alert("Lỗi Server. Thử lại sau!");
-            resetBtn(btn);
+            // Fallback: Nếu API vẫn tèo, dùng link thủ công để khách vẫn chơi được
+            let fallbackLink = "https://link4m.com/fallback_yonki";
+            processBypassLink(fallbackLink);
         });
+    }
+
+    function processBypassLink(shortUrl) {
+        window.open(shortUrl, '_blank'); 
+        
+        currentUser.dailyBypasses.count++;
+        updateUserDB();
+        
+        let pendingData = { link: shortUrl, time: Date.now() };
+        localStorage.setItem('yonkiPendingBypass_' + currentUser.idGame, JSON.stringify(pendingData));
+
+        startSilentCountdown(pendingData);
     }
 
     function startSilentCountdown(pendingData) {
         let btn = document.getElementById('bypassBtn');
-        btn.innerHTML = `<span class="loader"></span> ĐANG DUYỆT NGẦM... (KHÔNG ĐÓNG WEB)`;
+        btn.innerHTML = `<span class="loader"></span> ĐANG DUYỆT NGẦM...`;
         btn.disabled = true;
 
-        // Hiện Lịch sử Link
         let historyEl = document.getElementById('linkHistory');
         historyEl.classList.remove('hidden');
         document.getElementById('currentLink').innerText = pendingData.link;
@@ -384,62 +437,61 @@
         if(remaining < 0) remaining = 0;
 
         setTimeout(() => {
-            // Hoàn thành đếm 47s
-            currentUser.spinsLeft++;
-            currentUser.totalBypasses++;
-            updateUserDB();
-            updateUserUI();
-            
-            localStorage.removeItem('yonkiPendingBypass_' + currentUser.idGame);
-            historyEl.classList.add('hidden');
-            resetBtn(btn);
-
-            alert("Thành công +1 lượt");
+            completeBypass();
         }, remaining);
     }
 
     function checkPendingBypass() {
-        if(!currentUser) return;
+        if(!currentUser || currentUser.role === 'admin') return;
         let pending = JSON.parse(localStorage.getItem('yonkiPendingBypass_' + currentUser.idGame));
         if(pending) {
             let elapsed = Date.now() - pending.time;
             if(elapsed >= 47000) {
-                // Khách f5 trang mà đã qua 47s -> Cộng ngay
-                currentUser.spinsLeft++;
-                currentUser.totalBypasses++;
-                updateUserDB();
-                updateUserUI();
-                localStorage.removeItem('yonkiPendingBypass_' + currentUser.idGame);
-                alert("Hệ thống ghi nhận bạn đã hoàn thành duyệt link trước đó. Thành công +1 lượt");
+                completeBypass(true);
             } else {
-                // Chưa đủ 47s -> Chạy tiếp
                 startSilentCountdown(pending);
             }
         }
     }
 
-    function resetBtn(btn) {
+    function completeBypass(isOffline = false) {
+        currentUser.spinsLeft++;
+        currentUser.totalBypasses++;
+        
+        // CỘNG DỒN NĂNG LƯỢNG TOÀN SERVER (HÚT MÁU)
+        let gBypasses = parseInt(localStorage.getItem('yonkiGlobalBypasses')) || 0;
+        localStorage.setItem('yonkiGlobalBypasses', (gBypasses + 1).toString());
+
+        addLog("Vượt link thành công (+1 Lượt)");
+        
+        localStorage.removeItem('yonkiPendingBypass_' + currentUser.idGame);
+        document.getElementById('linkHistory').classList.add('hidden');
+        
+        let btn = document.getElementById('bypassBtn');
         btn.innerHTML = `⚡ VƯỢT LINK (LINK4M)`;
         btn.disabled = false;
+        
         updateUserUI();
+        if(!isOffline) alert("Hệ thống xác nhận: Thành công +1 lượt!");
     }
 
-    // --- VÒNG QUAY LOGIC ---
+    // --- VÒNG QUAY LOGIC (ADMIN = NORMAL, GLOBAL PITY) ---
     function spinWheel() {
         if(currentUser.spinsLeft <= 0) return alert("Đã hết lượt! Bấm VƯỢT LINK để nhận thêm.");
         
         let btn = document.getElementById('spinBtn');
         btn.disabled = true;
         currentUser.spinsLeft--;
-        updateUserDB();
-        updateUserUI();
-
+        addLog("Quay vòng quay nhân phẩm");
+        
         let winRate = 0.000000000000000001; 
-        let pityMultiplier = Math.floor(currentUser.totalBypasses / 20);
+        
+        // LUẬT NGẦM ÁP DỤNG CHUNG: Lấy tổng lượt toàn server chia 20
+        let gBypasses = parseInt(localStorage.getItem('yonkiGlobalBypasses')) || 0;
+        let pityMultiplier = Math.floor(gBypasses / 20);
         winRate += (pityMultiplier * 5); 
 
-        if(currentUser.role === 'admin') winRate = 100; 
-
+        // ADMIN bị tước quyền win 100%, phải dựa vào nhân phẩm như người bình thường!
         let rand = Math.random() * 100;
         let isWin = rand <= winRate || winRate >= 100;
         
@@ -455,22 +507,27 @@
 
         setTimeout(() => {
             btn.disabled = false;
-            if(isWin) {
-                if(currentUser.role === 'admin') {
-                    alert("Admin test vòng quay thành công!");
-                    return;
-                }
+            updateUserUI();
 
+            if(isWin) {
+                // Đưa vào Bảng xếp hạng
+                let history = JSON.parse(localStorage.getItem('yonkiTopHistory'));
+                let exist = history.find(h => h.idTiktok === currentUser.idTiktok);
+                if(exist) exist.wins++; 
+                else history.push({ idTiktok: currentUser.idTiktok, wins: 1 });
+                localStorage.setItem('yonkiTopHistory', JSON.stringify(history));
+
+                // Khóa hệ thống
                 let winnerData = { idGame: currentUser.idGame, idTiktok: currentUser.idTiktok };
                 localStorage.setItem('yonkiTodayWinner', JSON.stringify(winnerData));
                 
-                currentUser.totalBypasses = 0;
-                updateUserDB();
+                // RESET BỂ CHỨA NGẦM SERVER VỀ 0 -> HÚT MÁU
+                localStorage.setItem('yonkiGlobalBypasses', '0');
 
                 alert(`🎉 NHÂN PHẨM CỰC ĐẠI! BẠN ĐÃ TRÚNG GIẢI HÔM NAY!`);
                 checkGlobalStatus();
             } else {
-                alert("Chúc may mắn lần sau!");
+                alert("Rất tiếc, chúc bạn may mắn lần sau!");
             }
         }, 6000);
     }
