@@ -155,13 +155,12 @@
     </div>
 </div>
 
-<!-- Tích hợp Google Firebase SDK phiên bản 12.16.0 từ người dùng -->
+<!-- Đã hạ cấp xuống phiên bản 9.22.1 siêu ổn định để không bao giờ bị lỗi sập web -->
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
-    import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
+    import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-    // Cấu hình Firebase Database
     const firebaseConfig = {
       apiKey: "AIzaSyDY_gOyPEttBhB87W1-xnraPc9l54Xl8vg",
       authDomain: "yonkivn-database.firebaseapp.com",
@@ -195,7 +194,6 @@
     let currentRotation = 0;
     const API_KEY_LINK4M = '688d0212c6e84d0e055ba168'; 
 
-    // Kiểm tra và Reset ngày mới tự động
     function checkAutoReset(globalState) {
         let today = new Date().toLocaleDateString();
         if (globalState.lastDate !== today) {
@@ -215,7 +213,6 @@
         }
     }
 
-    // Lắng nghe dữ liệu Đồng bộ từ Google Firebase Realtime
     onValue(ref(db), (snapshot) => {
         const data = snapshot.val() || {};
         const globalState = data.global || { totalPrizes: 5, todayWinner: null, lastDate: '', globalBypasses: 0 };
@@ -223,7 +220,6 @@
         checkAutoReset(globalState);
         updateGlobalUI(globalState, data);
 
-        // Đang có người đăng nhập thì cập nhật thông tin
         if (currentUser) {
             get(ref(db, 'users/' + currentUser.idGame)).then((userSnap) => {
                 currentUser = userSnap.val();
@@ -241,7 +237,7 @@
         let isAdmin = currentUser && currentUser.role === 'admin';
 
         if (winner) {
-            switchScreen('globalClosedMsg');
+            window.switchScreen('globalClosedMsg');
             let hiddenTiktok = winner.idTiktok.substring(0, 3) + '*****';
             if (prizesLeft > 0) {
                 textEl.innerHTML = `Đã hết hôm nay<br>Người trúng thưởng là: <span style="color:#00ff88">${hiddenTiktok}</span>`;
@@ -249,11 +245,11 @@
                 textEl.innerHTML = `HẾT EVENT RÙI`;
             }
         } else if (prizesLeft <= 0) {
-            switchScreen('globalClosedMsg');
+            window.switchScreen('globalClosedMsg');
             textEl.innerHTML = `HẾT EVENT RÙI`;
         } else {
             if (currentUser && !isAdmin) {
-                switchScreen('userScreen');
+                window.switchScreen('userScreen');
             }
         }
 
@@ -264,7 +260,8 @@
         renderLeaderboard(dataListToArr(fullData.topHistory || {}));
     }
 
-    function switchScreen(screenId) {
+    // Gắn lệnh switchScreen lên window để HTML gọi được
+    window.switchScreen = function(screenId) {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('registerScreen').classList.add('hidden');
         document.getElementById('userScreen').classList.add('hidden');
@@ -285,7 +282,7 @@
                 let newUser = { idGame, idTiktok, pass, spinsLeft: 0, totalBypasses: 0, role: 'user', dailyBypasses: { date: '', count: 0 }, personalLogs: [] };
                 set(ref(db, 'users/' + idGame), newUser).then(() => {
                     alert("Đăng ký thành công! Hãy đăng nhập.");
-                    switchScreen('loginScreen');
+                    window.switchScreen('loginScreen');
                 });
             }
         });
@@ -328,7 +325,7 @@
             get(ref(db, 'global/totalPrizes')).then(s => {
                 document.getElementById('adminInventory').value = s.val() || 0;
             });
-            switchScreen('userScreen');
+            window.switchScreen('userScreen');
         } else {
             document.getElementById('adminPanel').classList.add('hidden');
             get(ref(db, 'global')).then(s => {
@@ -344,7 +341,7 @@
     window.logout = function() { 
         currentUser = null; 
         localStorage.removeItem('yonkiSessionUser');
-        switchScreen('loginScreen'); 
+        window.switchScreen('loginScreen'); 
     }
 
     function updateUserUI(globalState = null) {
@@ -583,11 +580,11 @@
                 currentUser = snap.val();
                 startSession();
             } else {
-                switchScreen('loginScreen');
+                window.switchScreen('loginScreen');
             }
         });
     } else {
-        switchScreen('loginScreen');
+        window.switchScreen('loginScreen');
     }
 </script>
 
