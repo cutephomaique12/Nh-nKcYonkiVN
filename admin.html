@@ -1,1 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - YonkiVN</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar glass-panel">
+            <h2 class="neon-red">OVERSEER</h2>
+            <p style="color:#aaa; font-size:12px; margin-bottom:20px;">v2026.1</p>
+            <button class="nav-btn active" onclick="loadDashboard()">Tổng Quan</button>
+            <button class="nav-btn" onclick="forceReset()">Reset Server</button>
+            <button class="nav-btn" onclick="logoutUser()" style="margin-top:auto;">Đăng Xuất</button>
+        </aside>
+        
+        <main class="content glass-panel">
+            <h1 class="neon-blue">DASHBOARD KIỂM SOÁT</h1>
+            
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h3>KHO QUÀ BẢO LƯU (25KC)</h3>
+                    <div class="input-group">
+                        <input type="number" id="adminInventory" value="0">
+                        <button class="btn-cyber btn-small" onclick="saveInventory()">Cập Nhật</button>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h3>TRẠNG THÁI SERVER</h3>
+                    <p>Năng lượng Hút Máu: <span id="adminEnergy" class="neon-gold">0%</span></p>
+                    <p>Người trúng hôm nay: <span id="adminTodayWinner" class="neon-green">Chưa có</span></p>
+                </div>
+            </div>
+
+            <div class="admin-panel mt-20">
+                <h3 class="neon-gold">🏆 TOP TÀI KHOẢN TRÚNG GIẢI</h3>
+                <div id="adminTopList" class="list-container"></div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
 
