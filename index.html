@@ -65,7 +65,6 @@
         .alert { background: rgba(255, 0, 85, 0.1); padding: 25px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(255,0,85,0.4); box-shadow: 0 0 30px rgba(255, 0, 85, 0.2); }
         .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #00ff88; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 10px; }
         
-        /* Box UI cho Lịch sử & Xếp hạng */
         .info-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px dashed rgba(0,255,136,0.3); font-size: 14px; text-align: left; }
         .info-box h3 { color: #ffd700; margin-bottom: 10px; font-family: 'Orbitron', sans-serif; font-size: 15px; text-align: center; }
         .winner-item, .history-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); font-size: 13px; }
@@ -78,6 +77,7 @@
 <body>
 
 <div class="container">
+    <!-- MÀN HÌNH ĐĂNG NHẬP -->
     <div id="loginScreen">
         <h1>YONKIVN OFFICIAL</h1>
         <h2>ĐĂNG NHẬP HỆ THỐNG</h2>
@@ -87,6 +87,7 @@
         <button class="btn-secondary" onclick="switchScreen('registerScreen')">Tạo Tài Khoản Mới</button>
     </div>
 
+    <!-- MÀN HÌNH ĐĂNG KÝ -->
     <div id="registerScreen" class="hidden">
         <h1>ĐĂNG KÝ ID</h1>
         <p style="color: #ff0055; font-size: 14px; margin-bottom: 15px; font-weight: bold;">⚠️ Cảnh báo: Sai ID không hỗ trợ nhận giải!</p>
@@ -97,12 +98,14 @@
         <button class="btn-secondary" onclick="switchScreen('loginScreen')">Quay Lại</button>
     </div>
 
+    <!-- THÔNG BÁO TẠM ĐÓNG SỰ KIỆN -->
     <div id="globalClosedMsg" class="alert hidden">
         <h1 style="color: #ff0055; font-size: 24px;">HỆ THỐNG THÔNG BÁO</h1>
         <div id="closedText" style="margin-top: 15px; font-size: 18px; color: #fff; font-weight: bold; line-height: 1.5;"></div>
         <button class="btn-secondary" style="margin-top: 20px" onclick="logout()">Đăng Xuất</button>
     </div>
 
+    <!-- MÀN HÌNH CHÍNH -->
     <div id="userScreen" class="hidden">
         <div id="adminPanel" class="hidden" style="background: rgba(255,0,85,0.1); padding: 15px; border-radius: 12px; border: 1px solid #ff0055; margin-bottom: 20px; text-align: left;">
             <h3 style="color: #ff0055; margin-bottom: 10px; font-family: 'Orbitron';">🔧 QUẢN TRỊ VIÊN</h3>
@@ -117,10 +120,9 @@
         
         <div class="stats-panel">
             <div style="text-align: left;">LƯỢT QUAY<br><span id="spinsLeft" style="color: #00ff88;">0</span></div>
-            <div style="text-align: right;">ĐÃ VƯỢT<br><span id="totalBypasses">0</span> LẦN</div>
+            <div style="text-align: right;">ĐÃ VƯỢT<br><span id="totalBypasses">0</span> LẦN</div>
         </div>
         
-        <!-- Bể chứa ngầm toàn server -->
         <div id="pityAlert" class="pity-alert">🌟 Năng lượng Server: <span id="globalEnergy">Đang tích tụ...</span></div>
         <p style="color: #888; font-size: 13px; margin-top: 5px;">Giới hạn cá nhân: <span id="dailyLimitText" style="color: #00ff88;">0</span>/4 lần vượt hôm nay</p>
         
@@ -139,13 +141,11 @@
             <a href="#" target="_blank" id="currentLink" style="color: #00e5ff; word-break: break-all;">Đang tải link...</a>
         </div>
 
-        <!-- BẢNG XẾP HẠNG -->
         <div class="info-box">
             <h3>🏆 BẢNG VÀNG NHÂN PHẨM 🏆</h3>
             <div id="topWinnerList"></div>
         </div>
 
-        <!-- LỊCH SỬ CÁ NHÂN -->
         <div class="info-box">
             <h3 style="color: #00e5ff;">🕒 LỊCH SỬ GẦN ĐÂY</h3>
             <div id="personalHistoryList"></div>
@@ -155,7 +155,28 @@
     </div>
 </div>
 
-<script>
+<!-- Tích hợp Google Firebase SDK phiên bản 12.16.0 từ người dùng -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
+    import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+    // Cấu hình Firebase Database
+    const firebaseConfig = {
+      apiKey: "AIzaSyDY_gOyPEttBhB87W1-xnraPc9l54Xl8vg",
+      authDomain: "yonkivn-database.firebaseapp.com",
+      databaseURL: "https://yonkivn-database-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "yonkivn-database",
+      storageBucket: "yonkivn-database.firebasestorage.app",
+      messagingSenderId: "558470041644",
+      appId: "1:558470041644:web:88c66165e90edd41874189",
+      measurementId: "G-C8J9N3P2TY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase(app);
+
     // --- Khởi tạo UI Vòng Quay ---
     const wheelEl = document.getElementById('wheel');
     const labels = ["TRÚNG", "May mắn lần sau", "May mắn lần sau", "May mắn lần sau", "TRÚNG", "May mắn lần sau", "May mắn lần sau", "May mắn lần sau", "TRÚNG", "May mắn lần sau", "May mắn lần sau", "May mắn lần sau"];
@@ -170,122 +191,54 @@
         wheelEl.appendChild(div);
     }
 
-    // --- KHỞI TẠO CƠ SỞ DỮ LIỆU ---
-    if(!localStorage.getItem('yonkiUsers')) localStorage.setItem('yonkiUsers', JSON.stringify([]));
-    if(!localStorage.getItem('yonkiTotalPrizes')) localStorage.setItem('yonkiTotalPrizes', '5');
-    if(!localStorage.getItem('yonkiTopHistory')) localStorage.setItem('yonkiTopHistory', JSON.stringify([]));
-    
-    // Bể chứa hút máu toàn Server
-    if(!localStorage.getItem('yonkiGlobalBypasses')) localStorage.setItem('yonkiGlobalBypasses', '0'); 
-    
     let currentUser = null;
     let currentRotation = 0;
     const API_KEY_LINK4M = '688d0212c6e84d0e055ba168'; 
 
-    function checkAutoReset() {
+    // Kiểm tra và Reset ngày mới tự động
+    function checkAutoReset(globalState) {
         let today = new Date().toLocaleDateString();
-        let lastDate = localStorage.getItem('yonkiLastDate');
-
-        if (lastDate !== today) {
-            let winner = JSON.parse(localStorage.getItem('yonkiTodayWinner'));
-            let prizesLeft = parseInt(localStorage.getItem('yonkiTotalPrizes')) || 0;
-
-            if (winner && prizesLeft > 0) {
+        if (globalState.lastDate !== today) {
+            let updates = {};
+            let prizesLeft = globalState.totalPrizes || 0;
+            
+            if (globalState.todayWinner && prizesLeft > 0) {
                 prizesLeft--;
-                localStorage.setItem('yonkiTotalPrizes', prizesLeft.toString());
             }
+            
+            updates['/global/totalPrizes'] = prizesLeft;
+            updates['/global/todayWinner'] = null;
+            updates['/global/lastDate'] = today;
+            updates['/global/globalBypasses'] = 0;
 
-            localStorage.setItem('yonkiTodayWinner', JSON.stringify(null));
-            localStorage.setItem('yonkiLastDate', today);
-            localStorage.setItem('yonkiGlobalBypasses', '0'); // Reset bể ngầm sang ngày mới
+            update(ref(db), updates);
         }
     }
 
-    function switchScreen(screenId) {
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('registerScreen').classList.add('hidden');
-        document.getElementById('userScreen').classList.add('hidden');
-        document.getElementById('globalClosedMsg').classList.add('hidden');
-        document.getElementById(screenId).classList.remove('hidden');
-    }
-
-    function register() {
-        let idGame = document.getElementById('regIdGame').value.trim();
-        let idTiktok = document.getElementById('regIdTiktok').value.trim();
-        let pass = document.getElementById('regPass').value.trim();
-        if(!idGame || !idTiktok || !pass) return alert("Vui lòng điền đầy đủ!");
+    // Lắng nghe dữ liệu Đồng bộ từ Google Firebase Realtime
+    onValue(ref(db), (snapshot) => {
+        const data = snapshot.val() || {};
+        const globalState = data.global || { totalPrizes: 5, todayWinner: null, lastDate: '', globalBypasses: 0 };
         
-        let users = JSON.parse(localStorage.getItem('yonkiUsers'));
-        if(users.find(u => u.idGame === idGame || u.idTiktok === idTiktok)) return alert("ID đã được đăng ký!");
+        checkAutoReset(globalState);
+        updateGlobalUI(globalState, data);
 
-        users.push({ idGame, idTiktok, pass, spinsLeft: 0, totalBypasses: 0, role: 'user', dailyBypasses: { date: '', count: 0 }, personalLogs: [] });
-        localStorage.setItem('yonkiUsers', JSON.stringify(users));
-        alert("Đăng ký thành công! Hãy đăng nhập.");
-        switchScreen('loginScreen');
-    }
-
-    function login() {
-        let loginId = document.getElementById('loginId').value.trim();
-        let pass = document.getElementById('loginPass').value.trim();
-
-        if(loginId === 'yonkivnofficial' && pass === 'honghiep') {
-            let users = JSON.parse(localStorage.getItem('yonkiUsers'));
-            let adminIndex = users.findIndex(u => u.role === 'admin');
-            if(adminIndex === -1) {
-                currentUser = { idGame: 'ADMIN', idTiktok: 'YONKIVN', pass: 'honghiep', spinsLeft: 100000, totalBypasses: 0, role: 'admin', dailyBypasses: { date: '', count: 0 }, personalLogs: [] };
-                users.push(currentUser);
-                localStorage.setItem('yonkiUsers', JSON.stringify(users));
-            } else {
-                currentUser = users[adminIndex];
-                currentUser.spinsLeft = 100000;
-                updateUserDB();
-            }
-            localStorage.setItem('yonkiSessionUser', currentUser.idGame);
-            startSession();
-            return;
+        // Đang có người đăng nhập thì cập nhật thông tin
+        if (currentUser) {
+            get(ref(db, 'users/' + currentUser.idGame)).then((userSnap) => {
+                currentUser = userSnap.val();
+                updateUserUI(globalState);
+            });
         }
+    });
 
-        let users = JSON.parse(localStorage.getItem('yonkiUsers'));
-        currentUser = users.find(u => (u.idGame === loginId || u.idTiktok === loginId) && u.pass === pass);
-
-        if(currentUser) {
-            localStorage.setItem('yonkiSessionUser', currentUser.idGame);
-            startSession();
-        } else {
-            alert("Sai ID hoặc mật khẩu!");
-        }
-    }
-
-    function startSession() {
-        if(currentUser.role === 'admin') {
-            document.getElementById('adminPanel').classList.remove('hidden');
-            document.getElementById('adminInventory').value = localStorage.getItem('yonkiTotalPrizes') || 0;
-            switchScreen('userScreen');
-        } else {
-            document.getElementById('adminPanel').classList.add('hidden');
-            checkGlobalStatus(); 
-        }
-        
-        if(!document.getElementById('userScreen').classList.contains('hidden')) {
-            updateUserUI();
-            renderLeaderboard();
-            renderHistory();
-            checkPendingBypass(); 
-        }
-    }
-
-    function logout() { 
-        currentUser = null; 
-        localStorage.removeItem('yonkiSessionUser');
-        switchScreen('loginScreen'); 
-    }
-
-    function checkGlobalStatus() {
-        if(!currentUser) return;
-        let winner = JSON.parse(localStorage.getItem('yonkiTodayWinner'));
-        let prizesLeft = parseInt(localStorage.getItem('yonkiTotalPrizes')) || 0;
+    function updateGlobalUI(globalState, fullData) {
         let closedMsg = document.getElementById('globalClosedMsg');
         let textEl = document.getElementById('closedText');
+        let prizesLeft = globalState.totalPrizes || 0;
+        let winner = globalState.todayWinner;
+
+        let isAdmin = currentUser && currentUser.role === 'admin';
 
         if (winner) {
             switchScreen('globalClosedMsg');
@@ -299,11 +252,102 @@
             switchScreen('globalClosedMsg');
             textEl.innerHTML = `HẾT EVENT RÙI`;
         } else {
-            switchScreen('userScreen');
+            if (currentUser && !isAdmin) {
+                switchScreen('userScreen');
+            }
         }
+
+        let gBypasses = globalState.globalBypasses || 0;
+        let energyLevel = Math.min(Math.floor((gBypasses % 20) / 20 * 100), 99);
+        document.getElementById('globalEnergy').innerText = `${energyLevel}%`;
+
+        renderLeaderboard(dataListToArr(fullData.topHistory || {}));
     }
 
-    function updateUserUI() {
+    function switchScreen(screenId) {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('registerScreen').classList.add('hidden');
+        document.getElementById('userScreen').classList.add('hidden');
+        document.getElementById('globalClosedMsg').classList.add('hidden');
+        document.getElementById(screenId).classList.remove('hidden');
+    }
+
+    window.register = function() {
+        let idGame = document.getElementById('regIdGame').value.trim();
+        let idTiktok = document.getElementById('regIdTiktok').value.trim();
+        let pass = document.getElementById('regPass').value.trim();
+        if(!idGame || !idTiktok || !pass) return alert("Vui lòng điền đầy đủ!");
+
+        get(ref(db, 'users/' + idGame)).then((snapshot) => {
+            if (snapshot.exists()) {
+                alert("ID đã được đăng ký!");
+            } else {
+                let newUser = { idGame, idTiktok, pass, spinsLeft: 0, totalBypasses: 0, role: 'user', dailyBypasses: { date: '', count: 0 }, personalLogs: [] };
+                set(ref(db, 'users/' + idGame), newUser).then(() => {
+                    alert("Đăng ký thành công! Hãy đăng nhập.");
+                    switchScreen('loginScreen');
+                });
+            }
+        });
+    }
+
+    window.login = function() {
+        let loginId = document.getElementById('loginId').value.trim();
+        let pass = document.getElementById('loginPass').value.trim();
+
+        if (loginId === 'yonkivnofficial' && pass === 'honghiep') {
+            get(ref(db, 'users/ADMIN')).then((snap) => {
+                if(!snap.exists()) {
+                    currentUser = { idGame: 'ADMIN', idTiktok: 'YONKIVN', pass: 'honghiep', spinsLeft: 100000, totalBypasses: 0, role: 'admin', dailyBypasses: { date: '', count: 0 }, personalLogs: [] };
+                    set(ref(db, 'users/ADMIN'), currentUser);
+                } else {
+                    currentUser = snap.val();
+                    currentUser.spinsLeft = 100000;
+                    update(ref(db, 'users/ADMIN'), { spinsLeft: 100000 });
+                }
+                localStorage.setItem('yonkiSessionUser', 'ADMIN');
+                startSession();
+            });
+            return;
+        }
+
+        get(ref(db, 'users/' + loginId)).then((snap) => {
+            if (snap.exists() && snap.val().pass === pass) {
+                currentUser = snap.val();
+                localStorage.setItem('yonkiSessionUser', currentUser.idGame);
+                startSession();
+            } else {
+                alert("Sai ID hoặc mật khẩu!");
+            }
+        });
+    }
+
+    function startSession() {
+        if (currentUser.role === 'admin') {
+            document.getElementById('adminPanel').classList.remove('hidden');
+            get(ref(db, 'global/totalPrizes')).then(s => {
+                document.getElementById('adminInventory').value = s.val() || 0;
+            });
+            switchScreen('userScreen');
+        } else {
+            document.getElementById('adminPanel').classList.add('hidden');
+            get(ref(db, 'global')).then(s => {
+                updateGlobalUI(s.val() || {}, {});
+            });
+        }
+        
+        updateUserUI();
+        renderHistory();
+        checkPendingBypass();
+    }
+
+    window.logout = function() { 
+        currentUser = null; 
+        localStorage.removeItem('yonkiSessionUser');
+        switchScreen('loginScreen'); 
+    }
+
+    function updateUserUI(globalState = null) {
         if(!currentUser) return;
         document.getElementById('spinsLeft').innerText = currentUser.spinsLeft;
         document.getElementById('totalBypasses').innerText = currentUser.totalBypasses;
@@ -313,18 +357,14 @@
             currentUser.dailyBypasses = { date: today, count: 0 };
         }
         document.getElementById('dailyLimitText').innerText = currentUser.dailyBypasses.count;
-        
-        let gBypasses = parseInt(localStorage.getItem('yonkiGlobalBypasses')) || 0;
-        let energyLevel = Math.min(Math.floor((gBypasses % 20) / 20 * 100), 99);
-        document.getElementById('globalEnergy').innerText = `${energyLevel}%`;
     }
 
     function addLog(action) {
         if(!currentUser.personalLogs) currentUser.personalLogs = [];
         let time = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
         currentUser.personalLogs.unshift(`[${time}] ${action}`);
-        if(currentUser.personalLogs.length > 5) currentUser.personalLogs.pop(); // Giữ 5 dòng mới nhất
-        updateUserDB();
+        if(currentUser.personalLogs.length > 5) currentUser.personalLogs.pop();
+        update(ref(db, 'users/' + currentUser.idGame), { personalLogs: currentUser.personalLogs });
         renderHistory();
     }
 
@@ -340,38 +380,28 @@
         });
     }
 
-    function renderLeaderboard() {
-        let history = JSON.parse(localStorage.getItem('yonkiTopHistory'));
+    function renderLeaderboard(historyArr) {
         let listEl = document.getElementById('topWinnerList');
-        if(history.length === 0) {
+        if(historyArr.length === 0) {
             listEl.innerHTML = '<div class="winner-item" style="color:#aaa; justify-content:center;">Chưa có huyền thoại nào...</div>';
             return;
         }
         listEl.innerHTML = '';
-        history.sort((a,b) => b.wins - a.wins).slice(0, 5).forEach(h => {
+        historyArr.sort((a,b) => b.wins - a.wins).slice(0, 5).forEach(h => {
             let hiddenId = h.idTiktok.substring(0, 3) + '***';
             listEl.innerHTML += `<div class="winner-item"><span>🌟 ${hiddenId}</span> <span style="color:#00ff88">${h.wins} Lần Trúng</span></div>`;
         });
     }
 
-    function updateUserDB() {
-        let users = JSON.parse(localStorage.getItem('yonkiUsers'));
-        let index = users.findIndex(u => u.idGame === currentUser.idGame);
-        if(index !== -1) {
-            users[index] = currentUser;
-            localStorage.setItem('yonkiUsers', JSON.stringify(users));
-        }
+    window.saveInventory = function() {
+        let newStock = parseInt(document.getElementById('adminInventory').value) || 0;
+        update(ref(db, 'global'), { totalPrizes: newStock }).then(() => {
+            alert(`Đã cập nhật: Kho quà hiện có ${newStock} giải!`);
+        });
     }
 
-    function saveInventory() {
-        let newStock = document.getElementById('adminInventory').value;
-        localStorage.setItem('yonkiTotalPrizes', newStock);
-        alert(`Đã cập nhật: Kho quà hiện có ${newStock} giải!`);
-    }
-
-    // --- SỬA LỖI API CORS BẰNG ALLORIGINS PROXY HOẶC FALLBACK ---
-    function startBypass() {
-        if(currentUser.role === 'admin') return alert("Admin có sẵn 100k lượt, không cần vượt link!");
+    window.startBypass = function() {
+        if(currentUser.role === 'admin') return alert("Admin không cần vượt link!");
         
         let today = new Date().toLocaleDateString();
         if(currentUser.dailyBypasses.date !== today) currentUser.dailyBypasses = { date: today, count: 0 };
@@ -388,23 +418,20 @@
         btn.disabled = true;
 
         let destUrl = "https://youtube.com/@yonkivnofficial"; 
-        
-        // Dùng proxy để vượt lỗi CORS chặn API
         let link4mUrl = `https://link4m.co/api-shorten/v2?api=${API_KEY_LINK4M}&url=${encodeURIComponent(destUrl)}`;
         let proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(link4mUrl)}`;
 
         fetch(proxyUrl)
         .then(res => res.json())
         .then(data => {
-            let parsedData = JSON.parse(data.contents); // Dữ liệu thật nằm trong contents
+            let parsedData = JSON.parse(data.contents);
             if(parsedData.status === 'success' || parsedData.shortenedUrl) {
                 processBypassLink(parsedData.shortenedUrl);
             } else {
-                throw new Error("Lỗi API Trả về");
+                throw new Error("Lỗi API");
             }
         })
         .catch(err => {
-            // Fallback: Nếu API vẫn tèo, dùng link thủ công để khách vẫn chơi được
             let fallbackLink = "https://link4m.com/fallback_yonki";
             processBypassLink(fallbackLink);
         });
@@ -414,7 +441,7 @@
         window.open(shortUrl, '_blank'); 
         
         currentUser.dailyBypasses.count++;
-        updateUserDB();
+        update(ref(db, 'users/' + currentUser.idGame), { dailyBypasses: currentUser.dailyBypasses });
         
         let pendingData = { link: shortUrl, time: Date.now() };
         localStorage.setItem('yonkiPendingBypass_' + currentUser.idGame, JSON.stringify(pendingData));
@@ -455,95 +482,113 @@
     }
 
     function completeBypass(isOffline = false) {
-        currentUser.spinsLeft++;
-        currentUser.totalBypasses++;
-        
-        // CỘNG DỒN NĂNG LƯỢNG TOÀN SERVER (HÚT MÁU)
-        let gBypasses = parseInt(localStorage.getItem('yonkiGlobalBypasses')) || 0;
-        localStorage.setItem('yonkiGlobalBypasses', (gBypasses + 1).toString());
+        get(ref(db, 'global')).then((snap) => {
+            let globalState = snap.val() || { globalBypasses: 0 };
+            let gBypasses = (globalState.globalBypasses || 0) + 1;
+            
+            currentUser.spinsLeft++;
+            currentUser.totalBypasses++;
+            
+            let updates = {};
+            updates['/global/globalBypasses'] = gBypasses;
+            updates['/users/' + currentUser.idGame + '/spinsLeft'] = currentUser.spinsLeft;
+            updates['/users/' + currentUser.idGame + '/totalBypasses'] = currentUser.totalBypasses;
 
-        addLog("Vượt link thành công (+1 Lượt)");
-        
-        localStorage.removeItem('yonkiPendingBypass_' + currentUser.idGame);
-        document.getElementById('linkHistory').classList.add('hidden');
-        
-        let btn = document.getElementById('bypassBtn');
-        btn.innerHTML = `⚡ VƯỢT LINK (LINK4M)`;
-        btn.disabled = false;
-        
-        updateUserUI();
-        if(!isOffline) alert("Hệ thống xác nhận: Thành công +1 lượt!");
+            update(ref(db), updates).then(() => {
+                addLog("Vượt link thành công (+1 Lượt)");
+                localStorage.removeItem('yonkiPendingBypass_' + currentUser.idGame);
+                document.getElementById('linkHistory').classList.add('hidden');
+                
+                let btn = document.getElementById('bypassBtn');
+                btn.innerHTML = `⚡ VƯỢT LINK (LINK4M)`;
+                btn.disabled = false;
+                
+                updateUserUI();
+                if(!isOffline) alert("Hệ thống xác nhận: Thành công +1 lượt!");
+            });
+        });
     }
 
-    // --- VÒNG QUAY LOGIC (ADMIN = NORMAL, GLOBAL PITY) ---
-    function spinWheel() {
+    window.spinWheel = function() {
         if(currentUser.spinsLeft <= 0) return alert("Đã hết lượt! Bấm VƯỢT LINK để nhận thêm.");
         
         let btn = document.getElementById('spinBtn');
         btn.disabled = true;
         currentUser.spinsLeft--;
-        addLog("Quay vòng quay nhân phẩm");
         
-        let winRate = 0.000000000000000001; 
-        
-        // LUẬT NGẦM ÁP DỤNG CHUNG: Lấy tổng lượt toàn server chia 20
-        let gBypasses = parseInt(localStorage.getItem('yonkiGlobalBypasses')) || 0;
-        let pityMultiplier = Math.floor(gBypasses / 20);
-        winRate += (pityMultiplier * 5); 
-
-        // ADMIN bị tước quyền win 100%, phải dựa vào nhân phẩm như người bình thường!
-        let rand = Math.random() * 100;
-        let isWin = rand <= winRate || winRate >= 100;
-        
-        let winSlots = [0, 4, 8];
-        let loseSlots = [1, 2, 3, 5, 6, 7, 9, 10, 11];
-        
-        let targetSlot = isWin ? winSlots[Math.floor(Math.random()*winSlots.length)] : loseSlots[Math.floor(Math.random()*loseSlots.length)];
-        let slotDegree = 360 / 12;
-        let targetDegree = (targetSlot * slotDegree) + (slotDegree / 2);
-        
-        currentRotation += 1800 + (360 - targetDegree) - (currentRotation % 360);
-        wheelEl.style.transform = `rotate(${currentRotation}deg)`;
-
-        setTimeout(() => {
-            btn.disabled = false;
-            updateUserUI();
-
-            if(isWin) {
-                // Đưa vào Bảng xếp hạng
-                let history = JSON.parse(localStorage.getItem('yonkiTopHistory'));
-                let exist = history.find(h => h.idTiktok === currentUser.idTiktok);
-                if(exist) exist.wins++; 
-                else history.push({ idTiktok: currentUser.idTiktok, wins: 1 });
-                localStorage.setItem('yonkiTopHistory', JSON.stringify(history));
-
-                // Khóa hệ thống
-                let winnerData = { idGame: currentUser.idGame, idTiktok: currentUser.idTiktok };
-                localStorage.setItem('yonkiTodayWinner', JSON.stringify(winnerData));
+        update(ref(db, 'users/' + currentUser.idGame), { spinsLeft: currentUser.spinsLeft }).then(() => {
+            addLog("Quay vòng quay nhân phẩm");
+            
+            get(ref(db)).then((snapshot) => {
+                let data = snapshot.val() || {};
+                let globalState = data.global || { globalBypasses: 0 };
                 
-                // RESET BỂ CHỨA NGẦM SERVER VỀ 0 -> HÚT MÁU
-                localStorage.setItem('yonkiGlobalBypasses', '0');
+                let winRate = 0.000000000000000001; 
+                let gBypasses = globalState.globalBypasses || 0;
+                let pityMultiplier = Math.floor(gBypasses / 20);
+                winRate += (pityMultiplier * 5); 
 
-                alert(`🎉 NHÂN PHẨM CỰC ĐẠI! BẠN ĐÃ TRÚNG GIẢI HÔM NAY!`);
-                checkGlobalStatus();
-            } else {
-                alert("Rất tiếc, chúc bạn may mắn lần sau!");
-            }
-        }, 6000);
+                let rand = Math.random() * 100;
+                let isWin = rand <= winRate || winRate >= 100;
+                
+                let winSlots = [0, 4, 8];
+                let loseSlots = [1, 2, 3, 5, 6, 7, 9, 10, 11];
+                
+                let targetSlot = isWin ? winSlots[Math.floor(Math.random()*winSlots.length)] : loseSlots[Math.floor(Math.random()*loseSlots.length)];
+                let slotDegree = 360 / 12;
+                let targetDegree = (targetSlot * slotDegree) + (slotDegree / 2);
+                
+                currentRotation += 1800 + (360 - targetDegree) - (currentRotation % 360);
+                wheelEl.style.transform = `rotate(${currentRotation}deg)`;
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    updateUserUI();
+
+                    if(isWin) {
+                        let topHistoryRef = ref(db, 'topHistory/' + currentUser.idTiktok);
+                        get(topHistoryRef).then((topSnap) => {
+                            let wins = topSnap.exists() ? (topSnap.val().wins || 0) + 1 : 1;
+                            
+                            let updates = {};
+                            updates['/topHistory/' + currentUser.idTiktok] = { idTiktok: currentUser.idTiktok, wins: wins };
+                            updates['/global/todayWinner'] = { idGame: currentUser.idGame, idTiktok: currentUser.idTiktok };
+                            updates['/global/globalBypasses'] = 0; 
+                            updates['/users/' + currentUser.idGame + '/totalBypasses'] = 0; 
+
+                            update(ref(db), updates).then(() => {
+                                alert(`🎉 NHÂN PHẨM CỰC ĐẠI! BẠN ĐÃ TRÚNG GIẢI HÔM NAY!`);
+                            });
+                        });
+                    } else {
+                        alert("Rất tiếc, chúc bạn may mắn lần sau!");
+                    }
+                }, 6000);
+            });
+        });
     }
 
-    // --- AUTO LOGIN NẾU ĐÃ LƯU SESSION ---
-    checkAutoReset();
+    function dataListToArr(obj) {
+        let arr = [];
+        for (let key in obj) {
+            arr.push(obj[key]);
+        }
+        return arr;
+    }
+
     let sessionUserId = localStorage.getItem('yonkiSessionUser');
     if(sessionUserId) {
-        let users = JSON.parse(localStorage.getItem('yonkiUsers'));
-        currentUser = users.find(u => u.idGame === sessionUserId);
-        if(currentUser) startSession();
-        else switchScreen('loginScreen');
+        get(ref(db, 'users/' + sessionUserId)).then((snap) => {
+            if (snap.exists()) {
+                currentUser = snap.val();
+                startSession();
+            } else {
+                switchScreen('loginScreen');
+            }
+        });
     } else {
         switchScreen('loginScreen');
     }
-
 </script>
 
 </body>
